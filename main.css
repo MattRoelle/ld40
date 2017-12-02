@@ -1,0 +1,20 @@
+* {
+    box-sizing: border-box;
+}
+
+html, body {
+    margin: 0;
+    padding: 0;
+    image-rendering: pixelated;
+    background: black;
+}
+
+#main-renderer {
+    transform-origin: 0 0;
+    transform: scale(4, 4);
+    display: block;
+    position: absolute;
+    top: 80px;
+    left: calc(50vw - 400px);
+    box-shadow: 0px 0px 5000px 10px rgba(255, 255, 255, 0.1);
+}
