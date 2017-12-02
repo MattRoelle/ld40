@@ -1,9 +1,12 @@
 ;(function () {
     window.ld40.utils = window.ld40.utils || {};
     const utils = window.ld40.utils;
+    
+    let _id = 0;
 
     utils.Rect = Rect;
     utils.clone = clone;
+    utils.uniqueId = uniqueId;
 
     function Rect(x, y, w, h) {
         this.set(x, y, w, h);
@@ -34,5 +37,9 @@
         let newObj = {};
         Object.assign(newObj, obj);
         return newObj;
+    }
+    
+    function uniqueId() {
+        return ++_id;
     }
 })();
