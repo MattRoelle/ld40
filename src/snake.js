@@ -8,10 +8,11 @@
     snake.Snake = Snake;
     snake.SnakeNode = SnakeNode;
 
-    function Snake(x, y, level) {
+    function Snake(x, y, level, game) {
         this.id = utils.uniqueId();
         this.pos = {x: x, y: y};
         this.level = level;
+        this.game = game;
         this.head = new SnakeNode(constants.SNAKE_NODE_TYPES.HEAD, null, x, y);
         this.nodes = [this.head];
         this.direction = {x: 1, y: 0};
@@ -21,9 +22,9 @@
 
     Snake.prototype.move = function (x, y) {
         this.direction = {x: x, y: y};
-        
+
         const angle = Math.atan2(this.direction.y, this.direction.x);
-        
+
         const targetx = this.head.pos.x + (Math.cos(angle) * constants.SNAKE_SPEED);
         const targety = this.head.pos.y + (Math.sin(angle) * constants.SNAKE_SPEED);
 
@@ -65,10 +66,10 @@
             const node = this.nodes[i];
             node.update();
         }
-        
-        for(let f of this.level.def.food) {
+
+        for (let f of this.level.def.food) {
             if (f.isDead) continue;
-            
+
             const adjx = f.x * constants.TILE_SIZE;
             const adjy = f.y * constants.TILE_SIZE;
 
@@ -76,9 +77,23 @@
                 f.isDead = true;
                 graphics.killEntity(f.id);
                 this.addNode();
+                this.game.eat();
             }
-            
+        }
 
+        for (let e of this.level.enemies) {
+            const r1 = new utils.Rect(e.pos.x - 13, e.pos.y - 13, constants.TILE_SIZE, constants.TILE_SIZE);
+            for (let n of this.nodes) {
+                const r2 = new utils.Rect(
+                    n.pos.x + constants.SNAKE_RECT_INSET,
+                    n.pos.y + constants.SNAKE_RECT_INSET,
+                    constants.SNAKE_RECT_SIZE,
+                    constants.SNAKE_RECT_SIZE
+                );
+                if (r1.collidesWith(r2)) {
+                    this.game.die();
+                }
+            }
         }
     };
     Snake.prototype.addNode = function () {
@@ -90,6 +105,9 @@
             lastNode.pos.y
         );
         this.nodes.push(newNode);
+        for (let i = constants.POSITION_HISTORY_LENGTH - 1; i >= 0; i--) {
+            newNode.positionHistory.push(utils.clone(lastNode.positionHistory[i]));
+        }
     };
 
     function SnakeNode(type, nextNode, x, y) {
@@ -100,9 +118,11 @@
         this.dpos = {x: 0, y: 0};
 
         this.positionHistory = [];
+        /*
         for (let i = 0; i < constants.POSITION_HISTORY_LENGTH; i++) {
             this.positionHistory.push(utils.clone(this.pos));
         }
+        */
     }
 
     SnakeNode.prototype.update = function () {
@@ -110,10 +130,6 @@
             const newPos = this.next.positionHistory[0];
             this.dpos = {x: newPos.x - this.pos.x, y: newPos.y - this.pos.y};
             this.pos = newPos;
-        }
-        
-        if (this.type == constants.SNAKE_NODE_TYPES.TAIL) {
-            console.log("tail");
         }
 
         this.positionHistory.push(utils.clone(this.pos));

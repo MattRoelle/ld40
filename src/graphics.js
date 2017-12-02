@@ -3,14 +3,8 @@
     const graphics = window.ld40.graphics;
     const constants = window.ld40.constants;
 
-    const _root = new PIXI.Container();
-    _root.scale.set(4, 4);
-    const _gData = {
-        snake: {
-            container: new PIXI.Container()
-        },
-        levels: {}
-    };
+    let _root;
+    let _gData;
 
     const _sLookup = {
         snake: {
@@ -18,6 +12,13 @@
             straight: {}
         }
     };
+    const _fontStyle = {
+        fontFamily: "arcadeclassicregular",
+        fontSize: 80,
+        fill: 0xFFFFFF,
+        align: "left"
+    };
+    let _curLivesShown = -1;
     _sLookup.snake.diag[constants.SNAKE_NODE_TYPES.HEAD] = "snake-head-diag";
     _sLookup.snake.diag[constants.SNAKE_NODE_TYPES.BODY] = "snake-body";
     _sLookup.snake.diag[constants.SNAKE_NODE_TYPES.TAIL] = "snake-tail-diag";
@@ -41,7 +42,9 @@
     graphics.renderSnake = _renderSnake;
     graphics.setCameraPos = _setCameraPos;
     graphics.renderLevel = _renderLevel;
+    graphics.renderUI = _renderUI;
     graphics.killEntity = _killEntity;
+    graphics.reset = _reset;
 
     function _init(cb) {
         PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.NEAREST;
@@ -50,19 +53,39 @@
             width: constants.SCREEN_W * 4,
             height: constants.SCREEN_H * 4,
             backgroundColor: 0x000000,
-            roundPixels: true
+            roundPixels: true,
+            antialias: false
         });
 
         graphics.pixiApp.view.id = "main-renderer";
         document.body.appendChild(graphics.pixiApp.view);
 
-        graphics.pixiApp.stage.addChild(_root);
-        _addSortedChild(_root, _gData.snake.container, 10);
+        _reset();
 
+        console.log(ld40.graphics.pixiApp.stage.children);
+        
         _addAssetsToLoader();
         PIXI.loader.load(function () {
             cb();
         });
+    }
+
+    function _reset() {
+        _emptyContainer(graphics.pixiApp.stage);
+        
+        _curLivesShown = -1;
+        _root = new PIXI.Container();
+        _root.scale.set(4, 4);
+        
+        _gData = {
+            snake: {
+                container: new PIXI.Container()
+            },
+            levels: {}
+        };
+
+        _addSortedChild(graphics.pixiApp.stage, _root, 15);
+        _addSortedChild(_root, _gData.snake.container, 10);
     }
 
     function _animationFrame() {
@@ -70,7 +93,7 @@
 
     function _setCameraPos(snakeHeadPos) {
         const x = -snakeHeadPos.x * 4 + ((constants.SCREEN_W * 4) / 2);
-        const y = -snakeHeadPos.y * 4 + ((constants.SCREEN_H * 4) / 2);
+        const y = -snakeHeadPos.y * 4 + ((constants.SCREEN_H * 4) / 2) - 60;
         _root.position.set(x, y);
     }
 
@@ -114,7 +137,8 @@
         }
     }
 
-    function _renderLevel(level) {
+    function _renderLevel(game) {
+        const level = game.level;
         let gLevel;
         if (!_gData[level.id]) {
             gLevel = {};
@@ -134,10 +158,16 @@
                     const adjh = loc.h * constants.TILE_SIZE;
                     const locSprite = PIXI.extras.TilingSprite.from(sName, adjw, adjh);
                     locSprite.position.set(adjx, adjy);
-                    const shadSprite = PIXI.extras.TilingSprite.from("shadow", adjw + 2, adjh + 2)
-                    shadSprite.position.set(adjx - 1, adjy - 1);
-                    _addSortedChild(_root, locSprite, 15);
+
+                    const shadSprite = PIXI.extras.TilingSprite.from("shadow", adjw + 4, adjh + 4)
+                    shadSprite.position.set(adjx - 2, adjy - 2);
                     _addSortedChild(_root, shadSprite, 17);
+
+                    const shadSprite2 = PIXI.extras.TilingSprite.from("shadow", adjw + 2, adjh + 2)
+                    shadSprite2.position.set(adjx, adjy);
+                    _addSortedChild(_root, shadSprite2, 17.5);
+
+                    _addSortedChild(_root, locSprite, 15);
                     console.log(locSprite);
                 }
             }
@@ -162,8 +192,97 @@
             foodSprite.scale.set(st, st);
             foodSprite.rotation += 0.03;
         }
+
+        for (let e of level.enemies) {
+            let eSprite;
+            if (!_gData[e.id]) {
+                eSprite = PIXI.Sprite.from(e.type);
+                _addSortedChild(_root, eSprite);
+                _gData[e.id] = eSprite;
+            } else {
+                eSprite = _gData[e.id];
+                eSprite.anchor.set(0.5, 0.5);
+            }
+
+            eSprite.position.set(e.pos.x - eSprite.texture.width / 2, e.pos.y - eSprite.texture.height / 2);
+
+            if (e.type == "spikeball") {
+                eSprite.rotation += 0.1;
+            }
+        }
+        
+        if (game.isExitOpen && !gLevel.exitSpr) {
+            gLevel.exitSpr = new PIXI.extras.AnimatedSprite([
+                "exit01",
+                "exit02"
+            ].map(PIXI.Texture.from));
+            gLevel.exitSpr.animationSpeed = 0.25;
+            gLevel.exitSpr.play();
+            gLevel.exitSpr.position.set(
+                level.def.exitPosition.x * constants.TILE_SIZE,
+                level.def.exitPosition.y * constants.TILE_SIZE
+            );
+            _addSortedChild(_root, gLevel.exitSpr, 14);
+        }
     }
-    
+
+    function _renderUI(game) {
+        let levelData;
+        if (!_gData[game.id]) {
+            levelData = {};
+
+            levelData.container = new PIXI.Container();
+            levelData.container.position.set(0, 130 * 4);
+            levelData.container.scale.set(4, 4);
+
+            levelData.backgroundGfx = new PIXI.Graphics();
+            levelData.backgroundGfx.beginFill(0x000000);
+            levelData.backgroundGfx.drawRect(0, 0, 200, 20);
+
+            _addUITextAt(levelData, "livesLabel", "LIVES", 5, 0);
+            _addUITextAt(levelData, "scoreLabel", "SCORE", 45, 0);
+            _addUITextAt(levelData, "scoreText", "0", 45, 8);
+            _addUITextAt(levelData, "highScoreLabel", "HIGH", 85, 0);
+            _addUITextAt(levelData, "highScoreText", "0", 85, 8);
+            _addUITextAt(levelData, "foodLabel", "FOOD", 125, 0);
+            _addUITextAt(levelData, "foodText", "0", 125, 8);
+
+            _addSortedChild(graphics.pixiApp.stage, levelData.container, 5);
+            _addSortedChild(levelData.container, levelData.backgroundGfx, 20);
+
+            _gData[game.id] = levelData;
+        } else {
+            levelData = _gData[game.id];
+        }
+
+        levelData.foodText.text = game.foodRemaining;
+        levelData.scoreText.text = game.score;
+
+        if (game.lives != _curLivesShown) {
+            _curLivesShown = game.lives;
+
+            if (!!levelData.livesShown) {
+                for (let spr of levelData.livesShown) {
+                    levelData.container.removeChild(spr);
+                }
+            }
+
+            levelData.livesShown = [];
+            for (let i = 0; i < game.lives; i++) {
+                const spr = PIXI.Sprite.from("snake-head");
+                _addSortedChild(levelData.container, spr, 5);
+                spr.position.set(2 + (12 * i), 9);
+            }
+        }
+    }
+
+    function _addUITextAt(levelData, k, text, x, y) {
+        levelData[k] = new PIXI.Text(text, _fontStyle);
+        levelData[k].position.set(x, y);
+        levelData[k].scale.set(0.125, 0.125);
+        _addSortedChild(levelData.container, levelData[k], 15);
+    }
+
     function _killEntity(id) {
         if (!!_gData[id]) {
             const ent = _gData[id];
@@ -171,10 +290,20 @@
             ent.isDead = true;
         }
     }
+    
+    function _emptyContainer(container) {
+        if (container.children.length == 0) return;
+        for(let i = 0; i < container.children.length; i++) {
+            const child = container.children[i];
+            _emptyContainer(child);
+            container.removeChild(child);
+        }
+    }
 
     function _addAssetsToLoader() {
         PIXI.loader
             .add("world-1-1", "./src/data/level1-1.json")
+            .add("world-1-2", "./src/data/level1-2.json")
             .add("world-1-tile-1", "./assets/world-1-tile-1.png")
             .add("shadow", "./assets/shadow.png")
             .add("snake-body", "./assets/body.png")
@@ -183,6 +312,9 @@
             .add("snake-head-diag", "./assets/head_diag.png")
             .add("snake-tail-diag", "./assets/tail_diag.png")
             .add("world-1-bg", "./assets/world-1-bg.png")
+            .add("spikeball", "./assets/spikeball.png")
+            .add("exit01", "./assets/exit01.png")
+            .add("exit02", "./assets/exit02.png")
             .add("food", "./assets/food.png");
     }
 
