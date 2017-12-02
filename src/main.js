@@ -25,6 +25,7 @@
         }
         
         graphics.animationFrame();
+        graphics.renderLevel(_curGame.level);
         graphics.renderSnake(_curGame.snake);
         graphics.setCameraPos(_curGame.snake.head.pos);
         

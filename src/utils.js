@@ -1,12 +1,13 @@
 ;(function () {
     window.ld40.utils = window.ld40.utils || {};
     const utils = window.ld40.utils;
-    
+
     let _id = 0;
 
     utils.Rect = Rect;
-    utils.clone = clone;
-    utils.uniqueId = uniqueId;
+    utils.clone = _clone;
+    utils.uniqueId = _uniqueId;
+    utils.dist = _dist;
 
     function Rect(x, y, w, h) {
         this.set(x, y, w, h);
@@ -17,29 +18,27 @@
         this.y = y;
         this.w = w;
         this.h = h;
-        this.left = x;
-        this.top = y;
-        this.right = x + w;
-        this.bottom = y + h;
     };
 
-    Rect.prototype.collidesWith = function (r2) {
-        const r1 = this;
-        return !(
-            r1.right < r2.left ||
-            r1.left > r2.right ||
-            r1.top > r2.bottom ||
-            r1.bottom < r2.top
-        );
+    Rect.prototype.collidesWith = function (rect2) {
+        const rect1 = this;
+        return rect1.x < rect2.x + rect2.w &&
+            rect1.x + rect1.w > rect2.x &&
+            rect1.y < rect2.y + rect2.h &&
+            rect1.h + rect1.y > rect2.y;
     };
-    
-    function clone(obj) {
+
+    function _clone(obj) {
         let newObj = {};
         Object.assign(newObj, obj);
         return newObj;
     }
-    
-    function uniqueId() {
+
+    function _uniqueId() {
         return ++_id;
+    }
+
+    function _dist(x1, y1, x2, y2) {
+        return Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
     }
 })();
