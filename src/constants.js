@@ -7,7 +7,6 @@
     constants.TILE_SIZE = 12;
     
     constants.SNAKE_SPEED = 2;
-    constants.TILE_CULLING_DIST = 40;
     constants.POSITION_HISTORY_LENGTH = 3;
     constants.TICKS_PER_SECOND = 32;
     constants.TICK_INTERVAL = 1000/constants.TICKS_PER_SECOND;

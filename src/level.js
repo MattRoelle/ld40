@@ -9,10 +9,15 @@
         const def = utils.clone(definition);
         this.id = utils.uniqueId();
         this.def = def;
+        
         for(let tile of def.tiles) {
             for(let loc of tile.locations) {
                 loc.id = utils.uniqueId();
             }
+        }
+        
+        for(let f of def.food) {
+            f.id = utils.uniqueId();
         }
     }
 })();

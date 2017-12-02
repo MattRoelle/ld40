@@ -2,22 +2,45 @@
 <html>
 <head>
     <title>LD40</title>
-    
-    <link href="./main.css" rel="stylesheet" type="text/css" />
+
+    <link href="./main.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
-    <!-- Dependencies -->
-    <script src="./vendor/pixi.js"></script>
+<!-- Shaders -->
+<script type="glsl" id="snake-shader">
+        precision lowp float;
+
+uniform vec4 uOverlayColor;
+uniform bool uOverlay;
+
+// Default PIXIjs vars
+uniform sampler2D uSampler;
+varying vec4 vColor;
+varying vec2 vTextureCoord;
+
+void main(){
+  vec4 c = texture2D(uSampler, vTextureCoord);
+  if (uActive == true && c.a > 0.0 && c.r > 0.05 && c.g > 0.05 && c.b > 0.05) {
+      gl_FragColor = uOverlayColor;
+  } else {
+      gl_FragColor = c;
+  }
+}
     
-    <!-- App -->
-    <script src="./src/init.js"></script>
-    <script src="./src/constants.js"></script>
-    <script src="./src/input.js"></script>
-    <script src="./src/graphics.js"></script>
-    <script src="./src/utils.js"></script>
-    <script src="./src/level.js"></script>
-    <script src="./src/snake.js"></script>
-    <script src="./src/game.js"></script>
-    <script src="./src/main.js"></script>
+</script>
+
+<!-- Dependencies -->
+<script src="./vendor/pixi.js"></script>
+
+<!-- App -->
+<script src="./src/init.js"></script>
+<script src="./src/constants.js"></script>
+<script src="./src/input.js"></script>
+<script src="./src/graphics.js"></script>
+<script src="./src/utils.js"></script>
+<script src="./src/level.js"></script>
+<script src="./src/snake.js"></script>
+<script src="./src/game.js"></script>
+<script src="./src/main.js"></script>
 </body>
 </html>

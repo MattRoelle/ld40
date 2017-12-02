@@ -2,6 +2,7 @@
     window.ld40.snake = window.ld40.snake || {};
     const snake = window.ld40.snake;
     const constants = window.ld40.constants;
+    const graphics = window.ld40.graphics;
     const utils = window.ld40.utils;
 
     snake.Snake = Snake;
@@ -26,30 +27,27 @@
         const targetx = this.head.pos.x + (Math.cos(angle) * constants.SNAKE_SPEED);
         const targety = this.head.pos.y + (Math.sin(angle) * constants.SNAKE_SPEED);
 
-        const tilesInRange = this.level.def.tiles.map((t) => {
+        const tiles = this.level.def.tiles.map((t) => {
             const ret = [];
             for (let i = 0; i < t.locations.length; i++) {
                 const loc = t.locations[i];
                 const adjx = loc.x * constants.TILE_SIZE;
                 const adjy = loc.y * constants.TILE_SIZE;
-                const dist = utils.dist(targetx, targety, adjx, adjy);
-                if (dist < constants.TILE_CULLING_DIST) {
-                    ret.push(new utils.Rect(adjx, adjy, constants.TILE_SIZE * loc.w, constants.TILE_SIZE * loc.h));
-                }
+                ret.push(new utils.Rect(adjx, adjy, constants.TILE_SIZE * loc.w, constants.TILE_SIZE * loc.h));
             }
             return ret;
         }).reduce((prev, curr) => prev.concat(curr));
 
+        const r = new utils.Rect(
+            targetx + constants.SNAKE_RECT_INSET,
+            targety + constants.SNAKE_RECT_INSET,
+            constants.SNAKE_RECT_SIZE,
+            constants.SNAKE_RECT_SIZE
+        );
 
         let canMove = true;
-        if (tilesInRange.length > 0) {
-            const r = new utils.Rect(
-                targetx + constants.SNAKE_RECT_INSET,
-                targety + constants.SNAKE_RECT_INSET,
-                constants.SNAKE_RECT_SIZE,
-                constants.SNAKE_RECT_SIZE
-            );
-            for (let r2 of tilesInRange) {
+        if (tiles.length > 0) {
+            for (let r2 of tiles) {
                 if (r.collidesWith(r2)) {
                     canMove = false;
                     break;
@@ -61,12 +59,26 @@
             this.head.pos.x = targetx;
             this.head.pos.y = targety;
         }
-
     };
     Snake.prototype.update = function () {
         for (let i = this.nodes.length - 1; i >= 0; i--) {
             const node = this.nodes[i];
             node.update();
+        }
+        
+        for(let f of this.level.def.food) {
+            if (f.isDead) continue;
+            
+            const adjx = f.x * constants.TILE_SIZE;
+            const adjy = f.y * constants.TILE_SIZE;
+
+            if (utils.dist(this.head.pos.x + 13, this.head.pos.y + 13, adjx, adjy) < 10) {
+                f.isDead = true;
+                graphics.killEntity(f.id);
+                this.addNode();
+            }
+            
+
         }
     };
     Snake.prototype.addNode = function () {
