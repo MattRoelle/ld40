@@ -16,7 +16,7 @@
         this.head = new SnakeNode(constants.SNAKE_NODE_TYPES.HEAD, null, x, y);
         this.nodes = [this.head];
         this.direction = {x: 1, y: 0};
-        
+
         this.lastDashAt = -1000;
 
         const _this = this;
@@ -24,11 +24,11 @@
 
     Snake.prototype.move = function (x, y) {
         if (this.dashing) return;
-        
+
         this.direction = {x: x, y: y};
         this.propel();
     };
-    Snake.prototype.propel = function() {
+    Snake.prototype.propel = function () {
         let speed = constants.SNAKE_SPEED;
         if (this.dashing) speed *= 2.25;
 
@@ -39,18 +39,18 @@
         const xangle = Math.atan2(0, this.direction.x);
         const xtargetx = this.head.pos.x + (Math.cos(xangle) * speed);
         const xtargety = this.head.pos.y + (Math.sin(xangle) * speed);
-        
+
         const yangle = Math.atan2(this.direction.y, 0);
         const ytargetx = this.head.pos.x + (Math.cos(yangle) * speed);
         const ytargety = this.head.pos.y + (Math.sin(yangle) * speed);
-        
+
         const r = new utils.Rect(
             ntargetx + constants.SNAKE_RECT_INSET,
             ntargety + constants.SNAKE_RECT_INSET,
             constants.SNAKE_RECT_SIZE,
             constants.SNAKE_RECT_SIZE
         );
-        
+
         const rx = new utils.Rect(
             xtargetx + constants.SNAKE_RECT_INSET,
             xtargety + constants.SNAKE_RECT_INSET,
@@ -88,19 +88,21 @@
         if (canMove) {
             this.head.pos.x = ntargetx;
             this.head.pos.y = ntargety;
-        } else if (canMoveY) {
-            this.head.pos.x = ytargetx;
-            this.head.pos.y = ytargety;
-        } else if (canMoveX) {
-            this.head.pos.x = xtargetx;
-            this.head.pos.y = xtargety;
+        } else if (this.direction.x != 0 && this.direction.y != 0) {
+            if (canMoveY) {
+                this.head.pos.x = ytargetx;
+                this.head.pos.y = ytargety;
+            } else if (canMoveX) {
+                this.head.pos.x = xtargetx;
+                this.head.pos.y = xtargety;
+            }
         } else {
             this.dashing = false;
         }
     };
     Snake.prototype.update = function () {
         if (this.dashing) this.propel();
-        
+
         for (let i = this.nodes.length - 1; i >= 0; i--) {
             const node = this.nodes[i];
             node.update();
@@ -122,7 +124,7 @@
 
         for (let e of this.level.enemies) {
             if (!e.isHitboxActive) continue;
-            
+
             const r1 = new utils.Rect(e.pos.x - 11, e.pos.y - 10, constants.TILE_SIZE - 2, constants.TILE_SIZE - 2);
             for (let n of this.nodes) {
                 const r2 = new utils.Rect(
@@ -136,10 +138,10 @@
                 }
             }
         }
-        
+
         if (this.game.isExitOpen) {
-            const adjx = this.game.level.def.exitPosition.x*constants.TILE_SIZE;
-            const adjy = this.game.level.def.exitPosition.y*constants.TILE_SIZE;
+            const adjx = this.game.level.def.exitPosition.x * constants.TILE_SIZE;
+            const adjy = this.game.level.def.exitPosition.y * constants.TILE_SIZE;
             if (utils.dist(this.head.pos.x, this.head.pos.y, adjx, adjy) < 10) {
                 this.game.nextLevel();
             }
@@ -158,17 +160,17 @@
             newNode.positionHistory.push(utils.clone(lastNode.positionHistory[i]));
         }
     };
-    Snake.prototype.dash = function() {
+    Snake.prototype.dash = function () {
         if (this.dashing) return;
-        
+
         const t = Date.now();
         const dt = t - this.lastDashAt;
         if (dt < 600) return;
         this.lastDashAt = t;
-        
+
         this.dashing = true;
         const _this = this;
-        setTimeout(function() {
+        setTimeout(function () {
             _this.dashing = false;
         }, 200);
     };
@@ -187,6 +189,7 @@
         }
         */
     }
+
     SnakeNode.prototype.update = function () {
         if (!!this.next) {
             const newPos = this.next.positionHistory[0];

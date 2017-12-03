@@ -12,7 +12,8 @@
     const levels = [
         "world-1-1",
         "world-1-2",
-        "world-1-3"
+        "world-1-3",
+        "world-2-1"
     ];
 
     function Game() {
