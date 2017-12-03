@@ -1,116 +1,50 @@
 {
     "name": "WORLD 1-1",
     "backgroundSprite": "world-1-bg",
-    "startPosition": { "x": 10, "y": 7 },
-    "exitPosition": { "x": 10, "y": 7 },
+    "startPosition": { "x": 10, "y": 11 },
+    "exitPosition": { "x": 10, "y": 9 },
     "cameraBounds": { "x1": 0, "x2": 0, "y1": 0, "y2": 0 },
     "tiles": [
         {
             "sprite": "world-1-tile-1",
             "locations": [
-                { "x": -5, "y": -7, "w": 40, "h": 10 },
+                { "x": -9, "y": -7, "w": 40, "h": 10 },
                 { "x": -10, "y": 12, "w": 40, "h": 10 },
-                { "x": 20, "y": 2, "w": 40, "h": 40 },
-                { "x": -20, "y": -20, "w": 20, "h": 60 },
-                { "x": 8, "y": 9, "w": 1, "h": 2 },
-                { "x": 12, "y": 9, "w": 1, "h": 2 },
-                { "x": 10, "y": 10, "w": 1, "h": 2 },
-                { "x": 8, "y": 6, "w": 5, "h": 1 },
-                { "x": 15, "y": 5, "w": 1, "h": 5 },
-                { "x": 16, "y": 6, "w": 1, "h": 3 },
-                { "x": 17, "y": 7, "w": 1, "h": 1 },
-                { "x": 8, "y": 8, "w": 5, "h": 1 },
-                { "x": 8, "y": 3, "w": 5, "h": 1 },
-                { "x": 1, "y": 4, "w": 2, "h": 3 },
-                { "x": 3, "y": 4, "w": 1, "h": 1 },
-                { "x": 4, "y": 4, "w": 3, "h": 3 },
-                { "x": 1, "y": 8, "w": 3, "h": 3 },
-                { "x": 4, "y": 10, "w": 1, "h": 1 },
-                { "x": 5, "y": 8, "w": 2, "h": 3 }
+                { "x": 16, "y": 2, "w": 40, "h": 40 },
+                { "x": -15, "y": -20, "w": 20, "h": 60 },
+                { "x": 9, "y": 9, "w": 1, "h": 3 },
+                { "x": 11, "y": 9, "w": 1, "h": 3 },
+                { "x": 7, "y": 6, "w": 7, "h": 1 },
+                { "x": 7, "y": 4, "w": 1, "h": 3 },
+                { "x": 13, "y": 4, "w": 1, "h": 3 },
+                { "x": 9, "y": 3, "w": 3, "h": 2 }
             ]
         }
     ],
     "food": [
         { "x": 11, "y": 10 },
-        { "x": 9, "y": 8 },
-        { "x": 13, "y": 8 },
-        { "x": 11, "y": 5 },
-        { "x": 20, "y": 8 },
-        { "x": 4, "y": 6 },
-        { "x": 5, "y": 10 }
+        { "x": 6, "y": 12 },
+        { "x": 16, "y": 12 },
+        { "x": 10, "y": 6 },
+        { "x": 11, "y": 6 },
+        { "x": 12, "y": 6 }
     ],
     "enemies": [
         {
             "type": "spikeball",
             "speed": 0.6,
             "positions": [
-                { "x": 17, "y": 6 },
-                { "x": 20, "y": 6 }
+                { "x": 6, "y": 10 },
+                { "x": 9, "y": 10 }
             ]
         },
         {
             "type": "spikeball",
             "speed": 0.6,
             "positions": [
-                { "x": 20, "y": 10 },
-                { "x": 17, "y": 10 }
+                { "x": 16, "y": 10 },
+                { "x": 13, "y": 10 }
             ]
-        },
-        {
-            "type": "speartrap",
-            "activePer": 1000,
-            "inactivePer": 1000,
-            "offset": 0,
-            "position": { "x": 20, "y": 4 }
-        },
-        {
-            "type": "speartrap",
-            "activePer": 1500,
-            "inactivePer": 4000,
-            "offset": 0,
-            "position": { "x": 4, "y": 7 }
-        },
-        {
-            "type": "speartrap",
-            "activePer": 1500,
-            "inactivePer": 4000,
-            "offset": 2000,
-            "position": { "x": 5, "y": 9 }
-        },
-        {
-            "type": "speartrap",
-            "activePer": 1000,
-            "inactivePer": 1000,
-            "offset": 0,
-            "position": { "x": 20, "y": 12 }
-        },
-        {
-            "type": "speartrap",
-            "activePer": 1500,
-            "inactivePer": 3500,
-            "offset": 0,
-            "position": { "x": 9, "y": 6 }
-        },
-        {
-            "type": "speartrap",
-            "activePer": 1500,
-            "inactivePer": 3500,
-            "offset": 0,
-            "position": { "x": 9, "y": 5 }
-        },
-        {
-            "type": "speartrap",
-            "activePer": 1500,
-            "inactivePer": 3500,
-            "offset": 1250,
-            "position": { "x": 13, "y": 6 }
-        },
-        {
-            "type": "speartrap",
-            "activePer": 1500,
-            "inactivePer": 3500,
-            "offset": 1250,
-            "position": { "x": 13, "y": 5 }
         }
     ]
 }

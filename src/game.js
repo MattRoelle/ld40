@@ -11,7 +11,8 @@
 
     const levels = [
         "world-1-1",
-        "world-1-2"
+        "world-1-2",
+        "world-1-3"
     ];
 
     function Game() {
@@ -19,6 +20,7 @@
         this.currentLevel = 0;
         this.lives = 3;
         this.reset();
+        window.ld40.game.gameInstance = this;
     }
 
     Game.prototype.tick = function () {

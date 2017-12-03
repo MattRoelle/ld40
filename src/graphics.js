@@ -311,8 +311,12 @@
             if (e.type == "spikeball") {
                 const curPos = e.def.positions[e.currentPosition % e.nPositions];
                 const nextPos = e.def.positions[(e.currentPosition + 1) % e.nPositions];
+                
                 if (nextPos.x > curPos.x) { eSprite.rotation = 0; eSprite.scale.set(1, 1); }
                 else if (nextPos.x < curPos.x) { eSprite.rotation = 0; eSprite.scale.set(-1, 1); }
+                else if (nextPos.y < curPos.y) { eSprite.rotation = -Math.PI/2; eSprite.scale.set(1, 1); }
+                else if (nextPos.y > curPos.y) { eSprite.rotation = Math.PI/2; eSprite.scale.set(1, 1); }
+                
             } else if (e.type == "speartrap") {
                 eSprite.spearSprite.position.set(e.pos.x - eSprite.texture.width / 2, e.pos.y - eSprite.texture.height / 2);
                 if (e.isHitboxActive) {
@@ -473,6 +477,7 @@
         PIXI.loader
             .add("world-1-1", "./src/data/level1-1.json")
             .add("world-1-2", "./src/data/level1-2.json")
+            .add("world-1-3", "./src/data/level1-3.json")
             .add("world-1-tile-1", "./assets/world-1-tile-1.png")
             .add("shadow", "./assets/shadow.png")
             .add("snake-body", "./assets/body.png")

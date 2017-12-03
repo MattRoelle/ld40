@@ -55,19 +55,36 @@
             constants.SNAKE_RECT_SIZE
         );
 
-        let canMove = true;
+        const rx = new utils.Rect(
+            this.head.pos.x + constants.SNAKE_RECT_INSET,
+            targety + constants.SNAKE_RECT_INSET,
+            constants.SNAKE_RECT_SIZE,
+            constants.SNAKE_RECT_SIZE
+        );
+        
+        const ry = new utils.Rect(
+            this.head.pos.y + constants.SNAKE_RECT_INSET,
+            targety + constants.SNAKE_RECT_INSET,
+            constants.SNAKE_RECT_SIZE,
+            constants.SNAKE_RECT_SIZE
+        );
+
+        let canMove = true, canMoveX = true, canMoveY = true;
         if (tiles.length > 0) {
             for (let r2 of tiles) {
-                if (r.collidesWith(r2)) {
-                    canMove = false;
-                    break;
-                }
+                if (r.collidesWith(r2)) canMove = false;
+                if (rx.collidesWith(r2)) canMoveX = false;
+                if (ry.collidesWith(r2)) canMoveY = false;
             }
         }
 
         if (canMove) {
             this.head.pos.x = targetx;
             this.head.pos.y = targety;
+        } else if (canMoveY) {
+            this.head.pos.y = targety;
+        } else if (canMoveX) {
+            this.head.pos.x = targetx;
         } else {
             this.dashing = false;
         }
