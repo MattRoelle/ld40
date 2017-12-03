@@ -14,46 +14,114 @@
         "world-1-1",
         "world-1-2",
         "world-1-3",
-        "world-2-1"
+        "world-2-1",
+        "world-2-2",
     ];
+
+    const gameStates = {
+        title: 0,
+        inGame: 1,
+        paused: 2,
+        gameOver: 3,
+        win: 4
+    };
 
     function Game() {
         this.initialTime = Date.now();
         this.currentLevel = 0;
         this.lives = 3;
-        this.reset();
+        this.score = 0;
+        this.canStartPlaying = false;
+        this.gameState = gameStates.title;
         window.ld40.game.gameInstance = this;
+        this.gotoTitle();
     }
 
-    Game.prototype.tick = function () {
-        this.ticks++;
-
-        const t = Date.now();
-        const dt = t - this.lastTickAt;
-
-        if (dt > constants.TICK_INTERVAL) {
-            this.lastTickAt = t;
-            this.update();
-        }
-
-        if (!this.atTransitionScreen) {
-            if (!this.dyingOrWarping) {
-                graphics.renderLevel(this);
+    Game.prototype.gotoTitle = function () {
+        graphics.reset();
+        this.gameState = gameStates.title;
+        const _this = this;
+        
+        this.canStartPlaying = false;
+        
+        input.onKeyDown(function () {
+            if (_this.gameState == gameStates.title) {
+                _this.startPlaying();
             }
-            graphics.renderSnake(this.snake);
-            graphics.setCameraPos(this.snake.head.pos, this.level.def.cameraBounds);
-        } else {
-            graphics.renderTransitionScreen(this);
-        }
+        });
+    };
+    
+    Game.prototype.win = function() {
+        if (this.gameState == gameStates.win) return;
+        
+        this.gameState = gameStates.win;
+        graphics.reset();
 
-        graphics.renderUI(this);
+        const _this = this;
+        input.onKeyDown(function () {
+            if (_this.gameState == gameStates.win) {
+                _this.gotoTitle();
+            }
+        });
+    };
+
+    Game.prototype.getHighScore = function () {
+        return localStorage.getItem("ld40-hs") || 0;
+    };
+
+    Game.prototype.setHighScore = function (val) {
+        this.highScore = val;
+        localStorage.setItem("ld40-hs", val);
+    };
+
+    Game.prototype.startPlaying = function () {
+        if (this.gameState == gameStates.inGame) return;
+        graphics.reset();
+        this.gameState = gameStates.inGame;
+        this.currentLevel = 0;
+        this.lives = 3;
+        this.score = 0;
+        this.reset();
+    };
+
+    Game.prototype.tick = function () {
+        if (this.gameState == gameStates.inGame) {
+            this.ticks++;
+
+            const t = Date.now();
+            const dt = t - this.lastTickAt;
+
+            if (!this.atTransitionScreen) {
+                if (!this.dyingOrWarping) {
+                    graphics.renderLevel(this);
+                }
+                graphics.renderSnake(this.snake);
+                graphics.setCameraPos(this.snake.head.pos, this.level.def.cameraBounds);
+            } else {
+                graphics.renderTransitionScreen(this);
+            }
+
+            graphics.renderUI(this);
+
+            if (dt > constants.TICK_INTERVAL) {
+                this.lastTickAt = t;
+                this.update();
+            }
+        } else if (this.gameState == gameStates.title) {
+            graphics.renderTitleScreen();
+        } else if (this.gameState == gameStates.gameOver) {
+            graphics.renderGameOver();
+            graphics.renderUI(this);
+        } else if (this.gameState == gameStates.win) {
+            graphics.renderVictoryScreen();
+            graphics.renderUI(this);
+        }
     };
     Game.prototype.update = function () {
         if (!this.dyingOrWarping) {
             this.snake.update();
             this.level.update();
         }
-        
         const dDirTicks = this.ticks - this.lastDirectionChangeAt;
         if (!this.dyingOrWarping && !this.atTransitionScreen && dDirTicks > constants.MIN_TICKS_BETWEEN_DIR_CHANGES) {
             let direction = {
@@ -69,7 +137,7 @@
     };
     Game.prototype.eat = function () {
         this.foodRemaining--;
-        this.score += 100;
+        this.levelScore += 100;
         if (this.foodRemaining <= 0) {
             this.isExitOpen = true;
         }
@@ -82,11 +150,36 @@
         const _this = this;
         setTimeout(function () {
             _this.lives--;
-            _this.reset();
+            if (_this.lives <= 0) {
+                _this.gameOver();
+            } else {
+                _this.reset();
+            }
         }, 3000);
 
     };
+    Game.prototype.gameOver = function () {
+        graphics.reset();
+        audio.pauseMusic();
+        
+        this.gameState = gameStates.gameOver;
+        this.score += this.levelScore;
+        this.levelScore = 0;
+
+        if (this.score > this.getHighScore()) {
+            this.setHighScore(this.score);
+        }
+        
+        const _this = this;
+        input.onKeyDown(function () {
+            if (_this.gameState == gameStates.gameOver) {
+                _this.gotoTitle();
+            }
+        });
+    };
     Game.prototype.reset = function () {
+        this.highScore = this.getHighScore();
+        this.levelScore = 0;
         audio.pauseMusic();
         graphics.reset(true);
         this.level = new level.Level(PIXI.loader.resources[levels[this.currentLevel]].data);
@@ -100,7 +193,6 @@
         this.ticks = 0;
         this.foodRemaining = this.level.def.food.length;
         this.lastDirectionChangeAt = -100;
-        this.score = 0;
         this.isExitOpen = false;
         this.atTransitionScreen = true;
         this.dyingOrWarping = false;
@@ -113,6 +205,9 @@
         }, 2500);
     };
     Game.prototype.nextLevel = function () {
+        this.score += this.levelScore;
+        this.levelScore = 0;
+        this.score += 1000;
         audio.playSfx("warp");
         this.dyingOrWarping = true;
         graphics.snakeWarpEffect();
@@ -120,7 +215,11 @@
         const _this = this;
         setTimeout(function () {
             _this.currentLevel++;
-            _this.reset();
+            if (_this.currentLevel >= levels.length) {
+                _this.win();
+            } else {
+                _this.reset();
+            }
         }, 2000);
     };
 })();

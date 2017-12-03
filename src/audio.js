@@ -10,6 +10,7 @@
         "eat": "./assets/music/eat.wav",
         "warp": "./assets/music/warping.wav",
         "die": "./assets/music/die.wav",
+        "dash": "./assets/music/dash.wav"
     };
     
     let musicAudio;
@@ -32,6 +33,9 @@
     
     function _playSfx(sfx) {
         var audio = new Audio(sfxLookup[sfx]);
+        if (sfx == "die") {
+            audio.volume = 0.5;
+        }
         audio.play();
     }
 })();

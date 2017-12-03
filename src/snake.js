@@ -25,7 +25,7 @@
 
     Snake.prototype.move = function (x, y) {
         if (this.dashing) return;
-
+        
         this.direction = {x: x, y: y};
         this.propel();
     };
@@ -169,6 +169,7 @@
         const dt = t - this.lastDashAt;
         if (dt < 600) return;
         this.lastDashAt = t;
+        audio.playSfx("dash");
 
         this.dashing = true;
         const _this = this;

@@ -42,6 +42,9 @@
     graphics.renderTransitionScreen = _renderTransitionScreen;
     graphics.snakeDieEffect = _snakeDieEffect;
     graphics.snakeWarpEffect = _snakeWarpEffect;
+    graphics.renderTitleScreen = _renderTitleScreen;
+    graphics.renderGameOver = _renderGameOver;
+    graphics.renderVictoryScreen = _renderVictoryScreen;
 
     function _init(cb) {
         PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.NEAREST;
@@ -71,6 +74,18 @@
         _curLivesShown = -1;
         _root = new PIXI.Container();
         _root.scale.set(4, 4);
+
+        if (_gData && _gData.title) {
+            graphics.pixiApp.stage.removeChild(_gData.title.container);
+        }
+
+        if (_gData && _gData.gameOver) {
+            graphics.pixiApp.stage.removeChild(_gData.gameOver.container);
+        }
+        
+        if (_gData && _gData.victory) {
+            graphics.pixiApp.stage.removeChild(_gData.victory.container);
+        }
 
         _gData = {
             snake: {
@@ -184,7 +199,7 @@
             }
 
             if (node.type == constants.SNAKE_NODE_TYPES.HEAD) {
-                
+
                 if (snake.dashing) {
                     if (snake.direction.x != 0 && snake.direction.y != 0) {
                         nodeSprite.texture = PIXI.utils.TextureCache["snake-head-diag-dashing"];
@@ -312,12 +327,24 @@
             if (e.type == "spikeball") {
                 const curPos = e.def.positions[e.currentPosition % e.nPositions];
                 const nextPos = e.def.positions[(e.currentPosition + 1) % e.nPositions];
-                
-                if (nextPos.x > curPos.x) { eSprite.rotation = 0; eSprite.scale.set(1, 1); }
-                else if (nextPos.x < curPos.x) { eSprite.rotation = 0; eSprite.scale.set(-1, 1); }
-                else if (nextPos.y < curPos.y) { eSprite.rotation = -Math.PI/2; eSprite.scale.set(1, 1); }
-                else if (nextPos.y > curPos.y) { eSprite.rotation = Math.PI/2; eSprite.scale.set(1, 1); }
-                
+
+                if (nextPos.x > curPos.x) {
+                    eSprite.rotation = 0;
+                    eSprite.scale.set(1, 1);
+                }
+                else if (nextPos.x < curPos.x) {
+                    eSprite.rotation = 0;
+                    eSprite.scale.set(-1, 1);
+                }
+                else if (nextPos.y < curPos.y) {
+                    eSprite.rotation = -Math.PI / 2;
+                    eSprite.scale.set(1, 1);
+                }
+                else if (nextPos.y > curPos.y) {
+                    eSprite.rotation = Math.PI / 2;
+                    eSprite.scale.set(1, 1);
+                }
+
             } else if (e.type == "speartrap") {
                 eSprite.spearSprite.position.set(e.pos.x - eSprite.texture.width / 2, e.pos.y - eSprite.texture.height / 2);
                 if (e.isHitboxActive) {
@@ -350,7 +377,7 @@
 
     function _renderUI(game) {
         let levelData;
-        if (!_gData[game.id]) {
+        if (!_gData.ui) {
             levelData = {};
 
             levelData.container = new PIXI.Container();
@@ -374,11 +401,11 @@
             _addSortedChild(graphics.pixiApp.stage, levelData.container, 5);
             _addSortedChild(levelData.container, levelData.backgroundGfx, 20);
 
-            _gData[game.id] = levelData;
+            _gData.ui = levelData;
         } else {
-            levelData = _gData[game.id];
+            levelData = _gData.ui;
         }
-        
+
         if (game.foodRemaining == 0) {
             levelData.exitOpen.alpha = 1;
         } else {
@@ -386,7 +413,8 @@
         }
 
         levelData.foodText.text = game.foodRemaining;
-        levelData.scoreText.text = game.score;
+        levelData.scoreText.text = game.score + game.levelScore;
+        levelData.highScoreText.text = game.highScore;
 
         if (game.lives != _curLivesShown) {
             _curLivesShown = game.lives;
@@ -485,14 +513,143 @@
         }
     }
 
+    function _renderTitleScreen() {
+        let title;
+        if (!_gData.title) {
+            title = {};
+
+            title.container = new PIXI.Container();
+            title.container.scale.set(4, 4);
+
+            title.titleText = PIXI.Sprite.from("title");
+            title.titleText.anchor.set(0.5, 0.5);
+            title.titleText.position.set(100, 10);
+            _addSortedChild(title.container, title.titleText, 10);
+
+            title.pressAKey = PIXI.Sprite.from("press-any-key");
+            title.pressAKey.anchor.set(0.5, 0.5);
+            title.pressAKey.position.set(100, 27);
+            _addSortedChild(title.container, title.pressAKey, 10);
+
+            title.inputHelp = PIXI.Sprite.from("input-help");
+            title.inputHelp.position.set(90, 65);
+            _addSortedChild(title.container, title.inputHelp, 10);
+
+            title.snakePieces = [];
+            for (let i = 0; i < 10; i++) {
+                const spr = PIXI.Sprite.from(i == 0 ? "snake-head" : "snake-body");
+                spr.scale.set(2, 2);
+                spr.position.set(30, 40 + (i * 15));
+                _addSortedChild(title.container, spr, 9 + (i / 100));
+                title.snakePieces.push(spr);
+            }
+
+            _addSortedChild(graphics.pixiApp.stage, title.container, 10);
+
+            _gData.title = title;
+        } else {
+            title = _gData.title;
+        }
+        
+        if (!!_gData.ui) {
+            graphics.pixiApp.stage.removeChild(_gData.ui.container);
+        }
+
+        for (let i = 0; i < title.snakePieces.length; i++) {
+            const spr = title.snakePieces[i];
+            spr.position.set(30 + Math.sin((Date.now() + (i * 250)) / 300) * 9, 40 + (i * 15));
+        }
+
+        if (Math.sin(Date.now() / 150) > 0.6) {
+            title.pressAKey.alpha = 0;
+        } else {
+            title.pressAKey.alpha = 1;
+        }
+    };
+
+    function _renderGameOver() {
+        let gameOver;
+        if (!_gData.gameOver) {
+            gameOver = {};
+
+
+            gameOver.container = new PIXI.Container();
+            gameOver.container.scale.set(4, 4);
+            _addSortedChild(graphics.pixiApp.stage, gameOver.container, 10);
+
+            gameOver.titleText = PIXI.Sprite.from("game-over");
+            gameOver.titleText.anchor.set(0.5, 0.5);
+            gameOver.titleText.position.set(100, 10);
+            _addSortedChild(gameOver.container, gameOver.titleText, 10);
+
+            gameOver.pressAKey = PIXI.Sprite.from("press-any-key");
+            gameOver.pressAKey.anchor.set(0.5, 0.5);
+            gameOver.pressAKey.position.set(100, 27);
+            _addSortedChild(gameOver.container, gameOver.pressAKey, 10);
+
+            _gData.gameOver = gameOver;
+        } else {
+            gameOver = _gData.gameOver;
+        }
+
+        if (Math.sin(Date.now() / 150) > 0.6) {
+            gameOver.pressAKey.alpha = 0;
+        } else {
+            gameOver.pressAKey.alpha = 1;
+        }
+    }
+    
+    function _renderVictoryScreen() {
+        let victory;
+        if (!_gData.victory) {
+            victory = {};
+            
+            victory.container = new PIXI.Container();
+            victory.container.scale.set(4, 4);
+            _addSortedChild(graphics.pixiApp.stage, victory.container, 10);
+
+            victory.titleText = PIXI.Sprite.from("victory");
+            victory.titleText.anchor.set(0.5, 0.5);
+            victory.titleText.position.set(100, 10);
+            _addSortedChild(victory.container, victory.titleText, 10);
+            
+            victory.thanks = PIXI.Sprite.from("thanks");
+            victory.thanks.anchor.set(0.5, 0.5);
+            victory.thanks.position.set(100, 70);
+            _addSortedChild(victory.container, victory.thanks, 10);
+
+            victory.pressAKey = PIXI.Sprite.from("press-any-key");
+            victory.pressAKey.anchor.set(0.5, 0.5);
+            victory.pressAKey.position.set(100, 27);
+            _addSortedChild(victory.container, victory.pressAKey, 10);
+
+            _gData.victory = victory;
+        } else {
+            victory = _gData.victory;
+        }
+
+        if (Math.sin(Date.now() / 150) > 0.6) {
+            victory.pressAKey.alpha = 0;
+        } else {
+            victory.pressAKey.alpha = 1;
+        }
+    }
+
     function _addAssetsToLoader() {
         PIXI.loader
             .add("world-1-1", "./src/data/level1-1.json")
             .add("world-1-2", "./src/data/level1-2.json")
             .add("world-1-3", "./src/data/level1-3.json")
             .add("world-2-1", "./src/data/level2-1.json")
+            .add("world-2-2", "./src/data/level2-2.json")
             .add("world-1-tile-1", "./assets/world-1-tile-1.png")
             .add("world-2-tile-1", "./assets/world-2-tile-1.png")
+            .add("title", "./assets/title.png")
+            .add("game-over", "./assets/game_over.png")
+            .add("press-any-key", "./assets/press_any_key.png")
+            .add("victory", "./assets/victory.png")
+            .add("thanks", "./assets/thanks.png")
+            .add("input-help", "./assets/input_help.png")
             .add("shadow", "./assets/shadow.png")
             .add("snake-body", "./assets/body.png")
             .add("snake-head", "./assets/head.png")

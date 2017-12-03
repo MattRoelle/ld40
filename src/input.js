@@ -4,6 +4,7 @@
     
     input.init = _init;
     input.isKeyDown = _isKeyDown;
+    input.onKeyDown = _onKeyDown;
 
     const _inputMap = {
         "w": 87,
@@ -30,5 +31,15 @@
     
     function _isKeyDown(k) {
         return !!_keystates[_inputMap[k]];
+    }
+    
+    let _currentKeydownEv;
+    function _onKeyDown(cb) {
+        if (!!_currentKeydownEv) {
+            window.removeEventListener(_currentKeydownEv);
+        }
+        _currentKeydownEv = window.addEventListener("keydown", function(e) {
+            cb();
+        });
     }
 })();

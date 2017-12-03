@@ -1,5 +1,5 @@
 {
-    "name": "WORLD 1-1",
+    "name": "1-1",
     "backgroundSprite": "world-1-bg",
     "startPosition": { "x": 10, "y": 11 },
     "exitPosition": { "x": 10, "y": 9 },

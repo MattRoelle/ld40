@@ -1,291 +1,112 @@
 {
-    "name": "WORLD 2-1",
+    "name": "2-1",
     "backgroundSprite": "world-2-bg",
-    "startPosition": { "x": 10, "y": 11 },
-    "exitPosition": { "x": 10, "y": -20 },
+    "startPosition": { "x": 17, "y": 11 },
+    "exitPosition": { "x": 8, "y": 7 },
     "cameraBounds": { "x1": 0, "x2": 0, "y1": 0, "y2": 0 },
     "tiles": [
         {
             "sprite": "world-2-tile-1",
             "locations": [
-                { "x": -9, "y": -30, "w": 40, "h": 10 },
+                { "x": -9, "y": -10, "w": 40, "h": 10 },
                 { "x": -10, "y": 12, "w": 40, "h": 10 },
-                { "x": 16, "y": -27, "w": 40, "h": 60 },
-                { "x": -15, "y": -24, "w": 20, "h": 60 },
-                { "x": 5, "y": 9, "w": 4, "h": 3 },
-                { "x": 12, "y": 9, "w": 4, "h": 3 },
-                { "x": 11, "y": 0, "w": 3, "h": 1 },
-                { "x": 11, "y": 2, "w": 3, "h": 1 },
-                { "x": 5, "y": -2, "w": 4, "h": 1 },
-                { "x": 5, "y": -6, "w": 4, "h": 1 },
-                { "x": 5, "y": -9, "w": 8, "h": 1 },
-                { "x": 13, "y": -12, "w": 1, "h": 4 }
+                { "x": 19, "y": -27, "w": 40, "h": 60 },
+                { "x": -18, "y": -24, "w": 20, "h": 60 },
+                { "x": 15, "y": 2, "w": 1, "h": 10 },
+                { "x": 0, "y": 0, "w": 13, "h": 3 },
+                { "x": 16, "y": 8, "w": 1, "h": 1 },
+                { "x": 18, "y": 8, "w": 1, "h": 1 },
+                { "x": 16, "y": 5, "w": 1, "h": 1 },
+                { "x": 18, "y": 5, "w": 1, "h": 1 }
             ]
         }
     ],
     "food": [
-        { "x": 11, "y": 10 },
-        { "x": 11, "y": 11 },
-        { "x": 12, "y": 2 },
-        { "x": 13, "y": 2 },
-        { "x": 14, "y": 2 },
-        { "x": 7, "y": -2 },
-        { "x": 7, "y": -3 },
-        { "x": 7, "y": -4 },
-        { "x": 10, "y": -9 },
-        { "x": 9, "y": -9 }
+        { "x": 18, "y": 9 },
+        { "x": 18, "y": 6 },
+        { "x": 9, "y": 11 },
+        { "x": 6, "y": 11 },
+        { "x": 9, "y": 5 },
+        { "x": 15, "y": 8 }
     ],
     "enemies": [
         {
             "type": "spikeball",
-            "speed": 0.275,
+            "speed": 0.6,
             "positions": [
-                { "x": 9, "y": -2 },
-                { "x": 9, "y": -4 }
+                { "x": 17, "y": 3 },
+                { "x": 19, "y": 3 }
+            ]
+        },
+        {
+            "type": "spikeball",
+            "speed": 1.25,
+            "positions": [
+                { "x": 3, "y": 5 },
+                { "x": 11, "y": 5 }
+            ]
+        },
+        {
+            "type": "spikeball",
+            "speed": 1.25,
+            "positions": [
+                { "x": 5, "y": 11 },
+                { "x": 13, "y": 11 }
+            ]
+        },
+        {
+            "type": "spikeball",
+            "speed": 0.4,
+            "positions": [
+                { "x": 5, "y": 7 },
+                { "x": 5, "y": 9 }
+            ]
+        },
+        {
+            "type": "spikeball",
+            "speed": 0.4,
+            "positions": [
+                { "x": 15, "y": 7 },
+                { "x": 15, "y": 9 }
             ]
         },
         
+        { "type": "speartrap", "activePer": 2000, "inactivePer": 4000, "offset": 3000, "position": { "x": 14, "y": 12 } },
+        { "type": "speartrap", "activePer": 2000, "inactivePer": 4000, "offset": 0, "position": { "x": 12, "y": 12 } },
+        { "type": "speartrap", "activePer": 2000, "inactivePer": 4000, "offset": 3000, "position": { "x": 10, "y": 12 } },
+        { "type": "speartrap", "activePer": 2000, "inactivePer": 4000, "offset": 0, "position": { "x": 8, "y": 12 } },
+        { "type": "speartrap", "activePer": 2000, "inactivePer": 4000, "offset": 3000, "position": { "x": 6, "y": 12 } },
+        { "type": "speartrap", "activePer": 2000, "inactivePer": 4000, "offset": 0, "position": { "x": 4, "y": 12 } },
         
-        { "type": "speartrap", "activePer": 1000, "inactivePer": 4000, "offset": 0, "position": { "x": 6, "y": 7 } },
-        { "type": "speartrap", "activePer": 1000, "inactivePer": 4000, "offset": 0, "position": { "x": 7, "y": 7 } },
-        { "type": "speartrap", "activePer": 1000, "inactivePer": 4000, "offset": 0, "position": { "x": 8, "y": 7 } },
-        { "type": "speartrap", "activePer": 1000, "inactivePer": 4000, "offset": 0, "position": { "x": 9, "y": 7 } },
-        { "type": "speartrap", "activePer": 1000, "inactivePer": 4000, "offset": 0, "position": { "x": 10, "y": 7 } },
-        { "type": "speartrap", "activePer": 1000, "inactivePer": 4000, "offset": 0, "position": { "x": 11, "y": 7 } },
-        { "type": "speartrap", "activePer": 1000, "inactivePer": 4000, "offset": 0, "position": { "x": 12, "y": 7 } },
-        { "type": "speartrap", "activePer": 1000, "inactivePer": 4000, "offset": 0, "position": { "x": 13, "y": 7 } },
-        { "type": "speartrap", "activePer": 1000, "inactivePer": 4000, "offset": 0, "position": { "x": 14, "y": 7 } },
-        { "type": "speartrap", "activePer": 1000, "inactivePer": 4000, "offset": 0, "position": { "x": 15, "y": 7 } },
-        { "type": "speartrap", "activePer": 1000, "inactivePer": 4000, "offset": 0, "position": { "x": 16, "y": 7 } },
+        { "type": "speartrap", "activePer": 2000, "inactivePer": 4000, "offset": 3000, "position": { "x": 15, "y": 10 } },
+        { "type": "speartrap", "activePer": 2000, "inactivePer": 4000, "offset": 0, "position": { "x": 13, "y": 10 } },
+        { "type": "speartrap", "activePer": 2000, "inactivePer": 4000, "offset": 3000, "position": { "x": 11, "y": 10 } },
+        { "type": "speartrap", "activePer": 2000, "inactivePer": 4000, "offset": 0, "position": { "x": 9, "y": 10 } },
+        { "type": "speartrap", "activePer": 2000, "inactivePer": 4000, "offset": 3000, "position": { "x": 7, "y": 10 } },
+        { "type": "speartrap", "activePer": 2000, "inactivePer": 4000, "offset": 0, "position": { "x": 5, "y": 10 } },
+        { "type": "speartrap", "activePer": 2000, "inactivePer": 4000, "offset": 3000, "position": { "x": 3, "y": 10 } },
         
-        { "type": "speartrap", "activePer": 1000, "inactivePer": 4000, "offset": 1000, "position": { "x": 6, "y": 6 } },
-        { "type": "speartrap", "activePer": 1000, "inactivePer": 4000, "offset": 1000, "position": { "x": 7, "y": 6 } },
-        { "type": "speartrap", "activePer": 1000, "inactivePer": 4000, "offset": 1000, "position": { "x": 8, "y": 6 } },
-        { "type": "speartrap", "activePer": 1000, "inactivePer": 4000, "offset": 1000, "position": { "x": 9, "y": 6 } },
-        { "type": "speartrap", "activePer": 1000, "inactivePer": 4000, "offset": 1000, "position": { "x": 10, "y": 6 } },
-        { "type": "speartrap", "activePer": 1000, "inactivePer": 4000, "offset": 1000, "position": { "x": 11, "y": 6 } },
-        { "type": "speartrap", "activePer": 1000, "inactivePer": 4000, "offset": 1000, "position": { "x": 12, "y": 6 } },
-        { "type": "speartrap", "activePer": 1000, "inactivePer": 4000, "offset": 1000, "position": { "x": 13, "y": 6 } },
-        { "type": "speartrap", "activePer": 1000, "inactivePer": 4000, "offset": 1000, "position": { "x": 14, "y": 6 } },
-        { "type": "speartrap", "activePer": 1000, "inactivePer": 4000, "offset": 1000, "position": { "x": 15, "y": 6 } },
-        { "type": "speartrap", "activePer": 1000, "inactivePer": 4000, "offset": 1000, "position": { "x": 16, "y": 6 } },
+        { "type": "speartrap", "activePer": 2000, "inactivePer": 4000, "offset": 3000, "position": { "x": 14, "y": 8 } },
+        { "type": "speartrap", "activePer": 2000, "inactivePer": 4000, "offset": 0, "position": { "x": 12, "y": 8 } },
+        { "type": "speartrap", "activePer": 2000, "inactivePer": 4000, "offset": 3000, "position": { "x": 10, "y": 8 } },
+        { "type": "speartrap", "activePer": 2000, "inactivePer": 4000, "offset": 0, "position": { "x": 8, "y": 8 } },
+        { "type": "speartrap", "activePer": 2000, "inactivePer": 4000, "offset": 3000, "position": { "x": 6, "y": 8 } },
+        { "type": "speartrap", "activePer": 2000, "inactivePer": 4000, "offset": 0, "position": { "x": 4, "y": 8 } },
         
-        { "type": "speartrap", "activePer": 1000, "inactivePer": 4000, "offset": 2000, "position": { "x": 6, "y": 5 } },
-        { "type": "speartrap", "activePer": 1000, "inactivePer": 4000, "offset": 2000, "position": { "x": 7, "y": 5 } },
-        { "type": "speartrap", "activePer": 1000, "inactivePer": 4000, "offset": 2000, "position": { "x": 8, "y": 5 } },
-        { "type": "speartrap", "activePer": 1000, "inactivePer": 4000, "offset": 2000, "position": { "x": 9, "y": 5 } },
-        { "type": "speartrap", "activePer": 1000, "inactivePer": 4000, "offset": 2000, "position": { "x": 10, "y": 5 } },
-        { "type": "speartrap", "activePer": 1000, "inactivePer": 4000, "offset": 2000, "position": { "x": 11, "y": 5 } },
-        { "type": "speartrap", "activePer": 1000, "inactivePer": 4000, "offset": 2000, "position": { "x": 12, "y": 5 } },
-        { "type": "speartrap", "activePer": 1000, "inactivePer": 4000, "offset": 2000, "position": { "x": 13, "y": 5 } },
-        { "type": "speartrap", "activePer": 1000, "inactivePer": 4000, "offset": 2000, "position": { "x": 14, "y": 5 } },
-        { "type": "speartrap", "activePer": 1000, "inactivePer": 4000, "offset": 2000, "position": { "x": 15, "y": 5 } },
-        { "type": "speartrap", "activePer": 1000, "inactivePer": 4000, "offset": 2000, "position": { "x": 16, "y": 5 } },
+        { "type": "speartrap", "activePer": 2000, "inactivePer": 4000, "offset": 3000, "position": { "x": 15, "y": 6 } },
+        { "type": "speartrap", "activePer": 2000, "inactivePer": 4000, "offset": 0, "position": { "x": 13, "y": 6 } },
+        { "type": "speartrap", "activePer": 2000, "inactivePer": 4000, "offset": 3000, "position": { "x": 11, "y": 6 } },
+        { "type": "speartrap", "activePer": 2000, "inactivePer": 4000, "offset": 0, "position": { "x": 9, "y": 6 } },
+        { "type": "speartrap", "activePer": 2000, "inactivePer": 4000, "offset": 3000, "position": { "x": 7, "y": 6 } },
+        { "type": "speartrap", "activePer": 2000, "inactivePer": 4000, "offset": 0, "position": { "x": 5, "y": 6 } },
+        { "type": "speartrap", "activePer": 2000, "inactivePer": 4000, "offset": 3000, "position": { "x": 3, "y": 6 } },
         
-        { "type": "speartrap", "activePer": 1000, "inactivePer": 4000, "offset": 3000, "position": { "x": 6, "y": 4 } },
-        { "type": "speartrap", "activePer": 1000, "inactivePer": 4000, "offset": 3000, "position": { "x": 7, "y": 4 } },
-        { "type": "speartrap", "activePer": 1000, "inactivePer": 4000, "offset": 3000, "position": { "x": 8, "y": 4 } },
-        { "type": "speartrap", "activePer": 1000, "inactivePer": 4000, "offset": 3000, "position": { "x": 9, "y": 4 } },
-        { "type": "speartrap", "activePer": 1000, "inactivePer": 4000, "offset": 3000, "position": { "x": 10, "y": 4 } },
-        { "type": "speartrap", "activePer": 1000, "inactivePer": 4000, "offset": 3000, "position": { "x": 11, "y": 4 } },
-        { "type": "speartrap", "activePer": 1000, "inactivePer": 4000, "offset": 3000, "position": { "x": 12, "y": 4 } },
-        { "type": "speartrap", "activePer": 1000, "inactivePer": 4000, "offset": 3000, "position": { "x": 13, "y": 4 } },
-        { "type": "speartrap", "activePer": 1000, "inactivePer": 4000, "offset": 3000, "position": { "x": 14, "y": 4 } },
-        { "type": "speartrap", "activePer": 1000, "inactivePer": 4000, "offset": 3000, "position": { "x": 15, "y": 4 } },
-        { "type": "speartrap", "activePer": 1000, "inactivePer": 4000, "offset": 3000, "position": { "x": 16, "y": 4 } },
+        { "type": "speartrap", "activePer": 2000, "inactivePer": 4000, "offset": 3000, "position": { "x": 14, "y": 4 } },
+        { "type": "speartrap", "activePer": 2000, "inactivePer": 4000, "offset": 0, "position": { "x": 12, "y": 4 } },
+        { "type": "speartrap", "activePer": 2000, "inactivePer": 4000, "offset": 3000, "position": { "x": 10, "y": 4 } },
+        { "type": "speartrap", "activePer": 2000, "inactivePer": 4000, "offset": 0, "position": { "x": 8, "y": 4 } },
+        { "type": "speartrap", "activePer": 2000, "inactivePer": 4000, "offset": 3000, "position": { "x": 6, "y": 4 } },
+        { "type": "speartrap", "activePer": 2000, "inactivePer": 4000, "offset": 0, "position": { "x": 4, "y": 4 } }
         
-        { "type": "speartrap", "activePer": 1000, "inactivePer": 4000, "offset": 4000, "position": { "x": 6, "y": 3 } },
-        { "type": "speartrap", "activePer": 1000, "inactivePer": 4000, "offset": 4000, "position": { "x": 7, "y": 3 } },
-        { "type": "speartrap", "activePer": 1000, "inactivePer": 4000, "offset": 4000, "position": { "x": 8, "y": 3 } },
-        { "type": "speartrap", "activePer": 1000, "inactivePer": 4000, "offset": 4000, "position": { "x": 9, "y": 3 } },
-        { "type": "speartrap", "activePer": 1000, "inactivePer": 4000, "offset": 4000, "position": { "x": 10, "y": 3 } },
-        { "type": "speartrap", "activePer": 1000, "inactivePer": 4000, "offset": 4000, "position": { "x": 11, "y": 3 } },
-        { "type": "speartrap", "activePer": 1000, "inactivePer": 4000, "offset": 4000, "position": { "x": 15, "y": 3 } },
-        { "type": "speartrap", "activePer": 1000, "inactivePer": 4000, "offset": 4000, "position": { "x": 16, "y": 3 } },
-        
-        { "type": "speartrap", "activePer": 1000, "inactivePer": 4000, "offset": 5000, "position": { "x": 6, "y": 2 } },
-        { "type": "speartrap", "activePer": 1000, "inactivePer": 4000, "offset": 5000, "position": { "x": 7, "y": 2 } },
-        { "type": "speartrap", "activePer": 1000, "inactivePer": 4000, "offset": 5000, "position": { "x": 8, "y": 2 } },
-        { "type": "speartrap", "activePer": 1000, "inactivePer": 4000, "offset": 5000, "position": { "x": 9, "y": 2 } },
-        { "type": "speartrap", "activePer": 1000, "inactivePer": 4000, "offset": 5000, "position": { "x": 10, "y": 2 } },
-        { "type": "speartrap", "activePer": 1000, "inactivePer": 4000, "offset": 5000, "position": { "x": 11, "y": 2 } },
-        { "type": "speartrap", "activePer": 1000, "inactivePer": 4000, "offset": 5000, "position": { "x": 15, "y": 2 } },
-        { "type": "speartrap", "activePer": 1000, "inactivePer": 4000, "offset": 5000, "position": { "x": 16, "y": 2 } },
-        
-        { "type": "speartrap", "activePer": 1000, "inactivePer": 4000, "offset": 6000, "position": { "x": 6, "y": 1 } },
-        { "type": "speartrap", "activePer": 1000, "inactivePer": 4000, "offset": 6000, "position": { "x": 7, "y": 1 } },
-        { "type": "speartrap", "activePer": 1000, "inactivePer": 4000, "offset": 6000, "position": { "x": 8, "y": 1 } },
-        { "type": "speartrap", "activePer": 1000, "inactivePer": 4000, "offset": 6000, "position": { "x": 9, "y": 1 } },
-        { "type": "speartrap", "activePer": 1000, "inactivePer": 4000, "offset": 6000, "position": { "x": 10, "y": 1 } },
-        { "type": "speartrap", "activePer": 1000, "inactivePer": 4000, "offset": 6000, "position": { "x": 11, "y": 1 } },
-        { "type": "speartrap", "activePer": 1000, "inactivePer": 4000, "offset": 6000, "position": { "x": 15, "y": 1 } },
-        { "type": "speartrap", "activePer": 1000, "inactivePer": 4000, "offset": 6000, "position": { "x": 16, "y": 1 } },
-        
-        
-        { "type": "speartrap", "activePer": 1000, "inactivePer": 4000, "offset": 7000, "position": { "x": 6, "y": 0 } },
-        { "type": "speartrap", "activePer": 1000, "inactivePer": 4000, "offset": 7000, "position": { "x": 7, "y": 0 } },
-        { "type": "speartrap", "activePer": 1000, "inactivePer": 4000, "offset": 7000, "position": { "x": 8, "y": 0 } },
-        { "type": "speartrap", "activePer": 1000, "inactivePer": 4000, "offset": 7000, "position": { "x": 9, "y": 0 } },
-        { "type": "speartrap", "activePer": 1000, "inactivePer": 4000, "offset": 7000, "position": { "x": 10, "y": 0 } },
-        { "type": "speartrap", "activePer": 1000, "inactivePer": 4000, "offset": 7000, "position": { "x": 11, "y": 0 } },
-        { "type": "speartrap", "activePer": 1000, "inactivePer": 4000, "offset": 7000, "position": { "x": 12, "y": 0 } },
-        { "type": "speartrap", "activePer": 1000, "inactivePer": 4000, "offset": 7000, "position": { "x": 13, "y": 0 } },
-        { "type": "speartrap", "activePer": 1000, "inactivePer": 4000, "offset": 7000, "position": { "x": 14, "y": 0 } },
-        { "type": "speartrap", "activePer": 1000, "inactivePer": 4000, "offset": 7000, "position": { "x": 15, "y": 0 } },
-        { "type": "speartrap", "activePer": 1000, "inactivePer": 4000, "offset": 7000, "position": { "x": 16, "y": 0 } },
-        
-        
-        { "type": "speartrap", "activePer": 1000, "inactivePer": 4000, "offset": 8000, "position": { "x": 10, "y": -1 } },
-        { "type": "speartrap", "activePer": 1000, "inactivePer": 4000, "offset": 8000, "position": { "x": 11, "y": -1 } },
-        { "type": "speartrap", "activePer": 1000, "inactivePer": 4000, "offset": 8000, "position": { "x": 12, "y": -1 } },
-        { "type": "speartrap", "activePer": 1000, "inactivePer": 4000, "offset": 8000, "position": { "x": 13, "y": -1 } },
-        { "type": "speartrap", "activePer": 1000, "inactivePer": 4000, "offset": 8000, "position": { "x": 14, "y": -1 } },
-        { "type": "speartrap", "activePer": 1000, "inactivePer": 4000, "offset": 8000, "position": { "x": 15, "y": -1 } },
-        { "type": "speartrap", "activePer": 1000, "inactivePer": 4000, "offset": 8000, "position": { "x": 16, "y": -1 } },
-        
-        
-        { "type": "speartrap", "activePer": 1000, "inactivePer": 4000, "offset": 9000, "position": { "x": 10, "y": -2 } },
-        { "type": "speartrap", "activePer": 1000, "inactivePer": 4000, "offset": 9000, "position": { "x": 11, "y": -2 } },
-        { "type": "speartrap", "activePer": 1000, "inactivePer": 4000, "offset": 9000, "position": { "x": 12, "y": -2 } },
-        { "type": "speartrap", "activePer": 1000, "inactivePer": 4000, "offset": 9000, "position": { "x": 13, "y": -2 } },
-        { "type": "speartrap", "activePer": 1000, "inactivePer": 4000, "offset": 9000, "position": { "x": 14, "y": -2 } },
-        { "type": "speartrap", "activePer": 1000, "inactivePer": 4000, "offset": 9000, "position": { "x": 15, "y": -2 } },
-        { "type": "speartrap", "activePer": 1000, "inactivePer": 4000, "offset": 9000, "position": { "x": 16, "y": -2 } },
-        
-        
-        { "type": "speartrap", "activePer": 1000, "inactivePer": 4000, "offset": 10000, "position": { "x": 10, "y": -3 } },
-        { "type": "speartrap", "activePer": 1000, "inactivePer": 4000, "offset": 10000, "position": { "x": 11, "y": -3 } },
-        { "type": "speartrap", "activePer": 1000, "inactivePer": 4000, "offset": 10000, "position": { "x": 12, "y": -3 } },
-        { "type": "speartrap", "activePer": 1000, "inactivePer": 4000, "offset": 10000, "position": { "x": 13, "y": -3 } },
-        { "type": "speartrap", "activePer": 1000, "inactivePer": 4000, "offset": 10000, "position": { "x": 14, "y": -3 } },
-        { "type": "speartrap", "activePer": 1000, "inactivePer": 4000, "offset": 10000, "position": { "x": 15, "y": -3 } },
-        { "type": "speartrap", "activePer": 1000, "inactivePer": 4000, "offset": 10000, "position": { "x": 16, "y": -3 } },
-        
-        
-        { "type": "speartrap", "activePer": 1000, "inactivePer": 4000, "offset": 11000, "position": { "x": 10, "y": -4 } },
-        { "type": "speartrap", "activePer": 1000, "inactivePer": 4000, "offset": 11000, "position": { "x": 11, "y": -4 } },
-        { "type": "speartrap", "activePer": 1000, "inactivePer": 4000, "offset": 11000, "position": { "x": 12, "y": -4 } },
-        { "type": "speartrap", "activePer": 1000, "inactivePer": 4000, "offset": 11000, "position": { "x": 13, "y": -4 } },
-        { "type": "speartrap", "activePer": 1000, "inactivePer": 4000, "offset": 11000, "position": { "x": 14, "y": -4 } },
-        { "type": "speartrap", "activePer": 1000, "inactivePer": 4000, "offset": 11000, "position": { "x": 15, "y": -4 } },
-        { "type": "speartrap", "activePer": 1000, "inactivePer": 4000, "offset": 11000, "position": { "x": 16, "y": -4 } },
-        
-        
-        { "type": "speartrap", "activePer": 1000, "inactivePer": 4000, "offset": 12000, "position": { "x": 10, "y": -5 } },
-        { "type": "speartrap", "activePer": 1000, "inactivePer": 4000, "offset": 12000, "position": { "x": 11, "y": -5 } },
-        { "type": "speartrap", "activePer": 1000, "inactivePer": 4000, "offset": 12000, "position": { "x": 12, "y": -5 } },
-        { "type": "speartrap", "activePer": 1000, "inactivePer": 4000, "offset": 12000, "position": { "x": 13, "y": -5 } },
-        { "type": "speartrap", "activePer": 1000, "inactivePer": 4000, "offset": 12000, "position": { "x": 14, "y": -5 } },
-        { "type": "speartrap", "activePer": 1000, "inactivePer": 4000, "offset": 12000, "position": { "x": 15, "y": -5 } },
-        { "type": "speartrap", "activePer": 1000, "inactivePer": 4000, "offset": 12000, "position": { "x": 16, "y": -5 } },
-        
-        
-        { "type": "speartrap", "activePer": 1000, "inactivePer": 4000, "offset": 13000, "position": { "x": 6, "y": -6 } },
-        { "type": "speartrap", "activePer": 1000, "inactivePer": 4000, "offset": 13000, "position": { "x": 7, "y": -6 } },
-        { "type": "speartrap", "activePer": 1000, "inactivePer": 4000, "offset": 13000, "position": { "x": 8, "y": -6 } },
-        { "type": "speartrap", "activePer": 1000, "inactivePer": 4000, "offset": 13000, "position": { "x": 9, "y": -6 } },
-        { "type": "speartrap", "activePer": 1000, "inactivePer": 4000, "offset": 13000, "position": { "x": 10, "y": -6 } },
-        { "type": "speartrap", "activePer": 1000, "inactivePer": 4000, "offset": 13000, "position": { "x": 11, "y": -6 } },
-        { "type": "speartrap", "activePer": 1000, "inactivePer": 4000, "offset": 13000, "position": { "x": 12, "y": -6 } },
-        { "type": "speartrap", "activePer": 1000, "inactivePer": 4000, "offset": 13000, "position": { "x": 13, "y": -6 } },
-        { "type": "speartrap", "activePer": 1000, "inactivePer": 4000, "offset": 13000, "position": { "x": 14, "y": -6 } },
-        { "type": "speartrap", "activePer": 1000, "inactivePer": 4000, "offset": 13000, "position": { "x": 15, "y": -6 } },
-        { "type": "speartrap", "activePer": 1000, "inactivePer": 4000, "offset": 13000, "position": { "x": 16, "y": -6 } },
-        
-        
-        { "type": "speartrap", "activePer": 1000, "inactivePer": 4000, "offset": 14000, "position": { "x": 6, "y": -7 } },
-        { "type": "speartrap", "activePer": 1000, "inactivePer": 4000, "offset": 14000, "position": { "x": 7, "y": -7 } },
-        { "type": "speartrap", "activePer": 1000, "inactivePer": 4000, "offset": 14000, "position": { "x": 8, "y": -7 } },
-        { "type": "speartrap", "activePer": 1000, "inactivePer": 4000, "offset": 14000, "position": { "x": 9, "y": -7 } },
-        { "type": "speartrap", "activePer": 1000, "inactivePer": 4000, "offset": 14000, "position": { "x": 10, "y": -7 } },
-        { "type": "speartrap", "activePer": 1000, "inactivePer": 4000, "offset": 14000, "position": { "x": 11, "y": -7 } },
-        { "type": "speartrap", "activePer": 1000, "inactivePer": 4000, "offset": 14000, "position": { "x": 12, "y": -7 } },
-        { "type": "speartrap", "activePer": 1000, "inactivePer": 4000, "offset": 14000, "position": { "x": 13, "y": -7 } },
-        { "type": "speartrap", "activePer": 1000, "inactivePer": 4000, "offset": 14000, "position": { "x": 14, "y": -7 } },
-        { "type": "speartrap", "activePer": 1000, "inactivePer": 4000, "offset": 14000, "position": { "x": 15, "y": -7 } },
-        { "type": "speartrap", "activePer": 1000, "inactivePer": 4000, "offset": 14000, "position": { "x": 16, "y": -7 } },
-        
-        
-        
-        
-        { "type": "speartrap", "activePer": 1000, "inactivePer": 4000, "offset": 17000, "position": { "x": 6, "y": -10 } },
-        { "type": "speartrap", "activePer": 1000, "inactivePer": 4000, "offset": 17000, "position": { "x": 7, "y": -10 } },
-        { "type": "speartrap", "activePer": 1000, "inactivePer": 4000, "offset": 17000, "position": { "x": 8, "y": -10 } },
-        { "type": "speartrap", "activePer": 1000, "inactivePer": 4000, "offset": 17000, "position": { "x": 9, "y": -10 } },
-        { "type": "speartrap", "activePer": 1000, "inactivePer": 4000, "offset": 17000, "position": { "x": 10, "y": -10 } },
-        
-        
-        { "type": "speartrap", "activePer": 1000, "inactivePer": 4000, "offset": 18000, "position": { "x": 6, "y": -11 } },
-        { "type": "speartrap", "activePer": 1000, "inactivePer": 4000, "offset": 18000, "position": { "x": 7, "y": -11 } },
-        { "type": "speartrap", "activePer": 1000, "inactivePer": 4000, "offset": 18000, "position": { "x": 8, "y": -11 } },
-        { "type": "speartrap", "activePer": 1000, "inactivePer": 4000, "offset": 18000, "position": { "x": 9, "y": -11 } },
-        { "type": "speartrap", "activePer": 1000, "inactivePer": 4000, "offset": 18000, "position": { "x": 10, "y": -11 } },
-        { "type": "speartrap", "activePer": 1000, "inactivePer": 4000, "offset": 18000, "position": { "x": 11, "y": -11 } },
-        { "type": "speartrap", "activePer": 1000, "inactivePer": 4000, "offset": 18000, "position": { "x": 12, "y": -11 } },
-        { "type": "speartrap", "activePer": 1000, "inactivePer": 4000, "offset": 18000, "position": { "x": 13, "y": -11 } },
-        
-        
-        { "type": "speartrap", "activePer": 1000, "inactivePer": 4000, "offset": 19000, "position": { "x": 6, "y": -12 } },
-        { "type": "speartrap", "activePer": 1000, "inactivePer": 4000, "offset": 19000, "position": { "x": 7, "y": -12 } },
-        { "type": "speartrap", "activePer": 1000, "inactivePer": 4000, "offset": 19000, "position": { "x": 8, "y": -12 } },
-        { "type": "speartrap", "activePer": 1000, "inactivePer": 4000, "offset": 19000, "position": { "x": 9, "y": -12 } },
-        { "type": "speartrap", "activePer": 1000, "inactivePer": 4000, "offset": 19000, "position": { "x": 10, "y": -12 } },
-        { "type": "speartrap", "activePer": 1000, "inactivePer": 4000, "offset": 19000, "position": { "x": 11, "y": -12 } },
-        { "type": "speartrap", "activePer": 1000, "inactivePer": 4000, "offset": 19000, "position": { "x": 12, "y": -12 } },
-        { "type": "speartrap", "activePer": 1000, "inactivePer": 4000, "offset": 19000, "position": { "x": 13, "y": -12 } },
-        { "type": "speartrap", "activePer": 1000, "inactivePer": 4000, "offset": 19000, "position": { "x": 14, "y": -12 } },
-        { "type": "speartrap", "activePer": 1000, "inactivePer": 4000, "offset": 19000, "position": { "x": 15, "y": -12 } },
-        { "type": "speartrap", "activePer": 1000, "inactivePer": 4000, "offset": 19000, "position": { "x": 16, "y": -12 } },
-        
-        
-        { "type": "speartrap", "activePer": 1000, "inactivePer": 4000, "offset": 20000, "position": { "x": 6, "y": -13 } },
-        { "type": "speartrap", "activePer": 1000, "inactivePer": 4000, "offset": 20000, "position": { "x": 7, "y": -13 } },
-        { "type": "speartrap", "activePer": 1000, "inactivePer": 4000, "offset": 20000, "position": { "x": 8, "y": -13 } },
-        { "type": "speartrap", "activePer": 1000, "inactivePer": 4000, "offset": 20000, "position": { "x": 9, "y": -13 } },
-        { "type": "speartrap", "activePer": 1000, "inactivePer": 4000, "offset": 20000, "position": { "x": 10, "y": -13 } },
-        { "type": "speartrap", "activePer": 1000, "inactivePer": 4000, "offset": 20000, "position": { "x": 11, "y": -13 } },
-        { "type": "speartrap", "activePer": 1000, "inactivePer": 4000, "offset": 20000, "position": { "x": 12, "y": -13 } },
-        { "type": "speartrap", "activePer": 1000, "inactivePer": 4000, "offset": 20000, "position": { "x": 13, "y": -13 } },
-        { "type": "speartrap", "activePer": 1000, "inactivePer": 4000, "offset": 20000, "position": { "x": 14, "y": -13 } },
-        { "type": "speartrap", "activePer": 1000, "inactivePer": 4000, "offset": 20000, "position": { "x": 15, "y": -13 } },
-        { "type": "speartrap", "activePer": 1000, "inactivePer": 4000, "offset": 20000, "position": { "x": 16, "y": -13 } },
-        
-        
-        { "type": "speartrap", "activePer": 1000, "inactivePer": 4000, "offset": 21000, "position": { "x": 6, "y": -14 } },
-        { "type": "speartrap", "activePer": 1000, "inactivePer": 4000, "offset": 21000, "position": { "x": 7, "y": -14 } },
-        { "type": "speartrap", "activePer": 1000, "inactivePer": 4000, "offset": 21000, "position": { "x": 8, "y": -14 } },
-        { "type": "speartrap", "activePer": 1000, "inactivePer": 4000, "offset": 21000, "position": { "x": 9, "y": -14 } },
-        { "type": "speartrap", "activePer": 1000, "inactivePer": 4000, "offset": 21000, "position": { "x": 10, "y": -14 } },
-        { "type": "speartrap", "activePer": 1000, "inactivePer": 4000, "offset": 21000, "position": { "x": 11, "y": -14 } },
-        { "type": "speartrap", "activePer": 1000, "inactivePer": 4000, "offset": 21000, "position": { "x": 12, "y": -14 } },
-        { "type": "speartrap", "activePer": 1000, "inactivePer": 4000, "offset": 21000, "position": { "x": 13, "y": -14 } },
-        { "type": "speartrap", "activePer": 1000, "inactivePer": 4000, "offset": 21000, "position": { "x": 14, "y": -14 } },
-        { "type": "speartrap", "activePer": 1000, "inactivePer": 4000, "offset": 21000, "position": { "x": 15, "y": -14 } },
-        { "type": "speartrap", "activePer": 1000, "inactivePer": 4000, "offset": 21000, "position": { "x": 16, "y": -14 } },
-        
-        
-        { "type": "speartrap", "activePer": 1000, "inactivePer": 4000, "offset": 22000, "position": { "x": 6, "y": -15 } },
-        { "type": "speartrap", "activePer": 1000, "inactivePer": 4000, "offset": 22000, "position": { "x": 7, "y": -15 } },
-        { "type": "speartrap", "activePer": 1000, "inactivePer": 4000, "offset": 22000, "position": { "x": 8, "y": -15 } },
-        { "type": "speartrap", "activePer": 1000, "inactivePer": 4000, "offset": 22000, "position": { "x": 9, "y": -15 } },
-        { "type": "speartrap", "activePer": 1000, "inactivePer": 4000, "offset": 22000, "position": { "x": 10, "y": -15 } },
-        { "type": "speartrap", "activePer": 1000, "inactivePer": 4000, "offset": 22000, "position": { "x": 11, "y": -15 } },
-        { "type": "speartrap", "activePer": 1000, "inactivePer": 4000, "offset": 22000, "position": { "x": 12, "y": -15 } },
-        { "type": "speartrap", "activePer": 1000, "inactivePer": 4000, "offset": 22000, "position": { "x": 13, "y": -15 } },
-        { "type": "speartrap", "activePer": 1000, "inactivePer": 4000, "offset": 22000, "position": { "x": 14, "y": -15 } },
-        { "type": "speartrap", "activePer": 1000, "inactivePer": 4000, "offset": 22000, "position": { "x": 15, "y": -15 } },
-        { "type": "speartrap", "activePer": 1000, "inactivePer": 4000, "offset": 22000, "position": { "x": 16, "y": -15 } },
-        
-        { "type": "speartrap", "activePer": 1000, "inactivePer": 4000, "offset": 23000, "position": { "x": 6, "y": -16 } },
-        { "type": "speartrap", "activePer": 1000, "inactivePer": 4000, "offset": 23000, "position": { "x": 7, "y": -16 } },
-        { "type": "speartrap", "activePer": 1000, "inactivePer": 4000, "offset": 23000, "position": { "x": 8, "y": -16 } },
-        { "type": "speartrap", "activePer": 1000, "inactivePer": 4000, "offset": 23000, "position": { "x": 9, "y": -16 } },
-        { "type": "speartrap", "activePer": 1000, "inactivePer": 4000, "offset": 23000, "position": { "x": 10, "y": -16 } },
-        { "type": "speartrap", "activePer": 1000, "inactivePer": 4000, "offset": 23000, "position": { "x": 11, "y": -16 } },
-        { "type": "speartrap", "activePer": 1000, "inactivePer": 4000, "offset": 23000, "position": { "x": 12, "y": -16 } },
-        { "type": "speartrap", "activePer": 1000, "inactivePer": 4000, "offset": 23000, "position": { "x": 13, "y": -16 } },
-        { "type": "speartrap", "activePer": 1000, "inactivePer": 4000, "offset": 23000, "position": { "x": 14, "y": -16 } },
-        { "type": "speartrap", "activePer": 1000, "inactivePer": 4000, "offset": 23000, "position": { "x": 15, "y": -16 } },
-        { "type": "speartrap", "activePer": 1000, "inactivePer": 4000, "offset": 23000, "position": { "x": 16, "y": -16 } }
     ]
 }
