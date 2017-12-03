@@ -183,10 +183,19 @@
             }
 
             if (node.type == constants.SNAKE_NODE_TYPES.HEAD) {
-                if (snake.direction.x != 0 && snake.direction.y != 0) {
-                    nodeSprite.texture = PIXI.utils.TextureCache["snake-head-diag"];
+                
+                if (snake.dashing) {
+                    if (snake.direction.x != 0 && snake.direction.y != 0) {
+                        nodeSprite.texture = PIXI.utils.TextureCache["snake-head-diag-dashing"];
+                    } else {
+                        nodeSprite.texture = PIXI.utils.TextureCache["snake-head-dashing"];
+                    }
                 } else {
-                    nodeSprite.texture = PIXI.utils.TextureCache["snake-head"];
+                    if (snake.direction.x != 0 && snake.direction.y != 0) {
+                        nodeSprite.texture = PIXI.utils.TextureCache["snake-head-diag"];
+                    } else {
+                        nodeSprite.texture = PIXI.utils.TextureCache["snake-head"];
+                    }
                 }
 
                 if (snake.direction.x < 0) {
@@ -200,7 +209,6 @@
                 else if (snake.direction.y < 0 && snake.direction.x < 0) nodeSprite.rotation = Math.PI / 2;
                 else if (snake.direction.y < 0 && snake.direction.x > 0) nodeSprite.rotation = -Math.PI / 2;
                 else nodeSprite.rotation = 0;
-
             }
 
             nodeSprite.position.set(node.pos.x + 5, node.pos.y + 5);
@@ -469,8 +477,10 @@
             .add("shadow", "./assets/shadow.png")
             .add("snake-body", "./assets/body.png")
             .add("snake-head", "./assets/head.png")
+            .add("snake-head-dashing", "./assets/head_dashing.png")
             .add("snake-tail", "./assets/tail.png")
             .add("snake-head-diag", "./assets/head_diag.png")
+            .add("snake-head-diag-dashing", "./assets/head_diag_dashing.png")
             .add("snake-tail-diag", "./assets/tail_diag.png")
             .add("world-1-bg", "./assets/world-1-bg.png")
             .add("spider01", "./assets/spider01.png")

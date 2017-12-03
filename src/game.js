@@ -49,18 +49,18 @@
             this.snake.update();
             this.level.update();
         }
-
+        
         const dDirTicks = this.ticks - this.lastDirectionChangeAt;
         if (!this.dyingOrWarping && !this.atTransitionScreen && dDirTicks > constants.MIN_TICKS_BETWEEN_DIR_CHANGES) {
             let direction = {
-                x: input.isKeyDown("a") ? -1 : input.isKeyDown("d") ? 1 : 0,
-                y: input.isKeyDown("w") ? -1 : input.isKeyDown("s") ? 1 : 0,
+                x: (input.isKeyDown("a") || input.isKeyDown("left")) ? -1 : (input.isKeyDown("d") || input.isKeyDown("right")) ? 1 : 0,
+                y: (input.isKeyDown("w") || input.isKeyDown("up")) ? -1 : (input.isKeyDown("s") || input.isKeyDown("down")) ? 1 : 0,
             }
             if (direction.x != 0 || direction.y != 0) this.snake.move(direction.x, direction.y);
         }
 
-        if (input.isKeyDown("space")) {
-            this.snake.addNode();
+        if (input.isKeyDown("space") || input.isKeyDown("shift")) {
+            this.snake.dash();
         }
     };
     Game.prototype.eat = function () {

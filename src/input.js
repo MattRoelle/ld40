@@ -10,7 +10,12 @@
         "a": 65,
         "s": 83,
         "d": 68,
-        "space": 32
+        "space": 32,
+        "shift": 16,
+        "left": 37,
+        "up": 38,
+        "right": 39,
+        "down": 40
     };
     let _keystates = {};
     

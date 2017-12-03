@@ -16,17 +16,26 @@
         this.head = new SnakeNode(constants.SNAKE_NODE_TYPES.HEAD, null, x, y);
         this.nodes = [this.head];
         this.direction = {x: 1, y: 0};
+        
+        this.lastDashAt = -1000;
 
         const _this = this;
     }
 
     Snake.prototype.move = function (x, y) {
+        if (this.dashing) return;
+        
         this.direction = {x: x, y: y};
-
+        this.propel();
+    };
+    Snake.prototype.propel = function() {
         const angle = Math.atan2(this.direction.y, this.direction.x);
 
-        const targetx = this.head.pos.x + (Math.cos(angle) * constants.SNAKE_SPEED);
-        const targety = this.head.pos.y + (Math.sin(angle) * constants.SNAKE_SPEED);
+        let speed = constants.SNAKE_SPEED;
+        if (this.dashing) speed *= 2.25;
+        
+        const targetx = this.head.pos.x + (Math.cos(angle) * speed);
+        const targety = this.head.pos.y + (Math.sin(angle) * speed);
 
         const tiles = this.level.def.tiles.map((t) => {
             const ret = [];
@@ -59,9 +68,13 @@
         if (canMove) {
             this.head.pos.x = targetx;
             this.head.pos.y = targety;
+        } else {
+            this.dashing = false;
         }
     };
     Snake.prototype.update = function () {
+        if (this.dashing) this.propel();
+        
         for (let i = this.nodes.length - 1; i >= 0; i--) {
             const node = this.nodes[i];
             node.update();
@@ -84,7 +97,7 @@
         for (let e of this.level.enemies) {
             if (!e.isHitboxActive) continue;
             
-            const r1 = new utils.Rect(e.pos.x - 13, e.pos.y - 13, constants.TILE_SIZE, constants.TILE_SIZE);
+            const r1 = new utils.Rect(e.pos.x - 11, e.pos.y - 10, constants.TILE_SIZE - 2, constants.TILE_SIZE - 2);
             for (let n of this.nodes) {
                 const r2 = new utils.Rect(
                     n.pos.x + constants.SNAKE_RECT_INSET,
@@ -118,6 +131,20 @@
         for (let i = constants.POSITION_HISTORY_LENGTH - 1; i >= 0; i--) {
             newNode.positionHistory.push(utils.clone(lastNode.positionHistory[i]));
         }
+    };
+    Snake.prototype.dash = function() {
+        if (this.dashing) return;
+        
+        const t = Date.now();
+        const dt = t - this.lastDashAt;
+        if (dt < 600) return;
+        this.lastDashAt = t;
+        
+        this.dashing = true;
+        const _this = this;
+        setTimeout(function() {
+            _this.dashing = false;
+        }, 200);
     };
 
     function SnakeNode(type, nextNode, x, y) {
