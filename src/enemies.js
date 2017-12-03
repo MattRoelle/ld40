@@ -53,8 +53,8 @@
         const dt = Date.now() - this.timeSpawned;
         const ddt = dt - this.lastPeriodChange;
         if ((this.isHitboxActive && ddt > this.def.activePer) || (!this.isHitboxActive && ddt > this.def.inactivePer)) {
+            this.lastPeriodChange = this.lastPeriodChange + (this.isHitboxActive ? this.def.activePer : this.def.inactivePer);
             this.isHitboxActive = !this.isHitboxActive;
-            this.lastPeriodChange = dt;
         }
     };
 })();

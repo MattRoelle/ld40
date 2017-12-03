@@ -29,13 +29,41 @@
         this.propel();
     };
     Snake.prototype.propel = function() {
-        const angle = Math.atan2(this.direction.y, this.direction.x);
-
         let speed = constants.SNAKE_SPEED;
         if (this.dashing) speed *= 2.25;
+
+        const nangle = Math.atan2(this.direction.y, this.direction.x);
+        const ntargetx = this.head.pos.x + (Math.cos(nangle) * speed);
+        const ntargety = this.head.pos.y + (Math.sin(nangle) * speed);
+
+        const xangle = Math.atan2(0, this.direction.x);
+        const xtargetx = this.head.pos.x + (Math.cos(xangle) * speed);
+        const xtargety = this.head.pos.y + (Math.sin(xangle) * speed);
         
-        const targetx = this.head.pos.x + (Math.cos(angle) * speed);
-        const targety = this.head.pos.y + (Math.sin(angle) * speed);
+        const yangle = Math.atan2(this.direction.y, 0);
+        const ytargetx = this.head.pos.x + (Math.cos(yangle) * speed);
+        const ytargety = this.head.pos.y + (Math.sin(yangle) * speed);
+        
+        const r = new utils.Rect(
+            ntargetx + constants.SNAKE_RECT_INSET,
+            ntargety + constants.SNAKE_RECT_INSET,
+            constants.SNAKE_RECT_SIZE,
+            constants.SNAKE_RECT_SIZE
+        );
+        
+        const rx = new utils.Rect(
+            xtargetx + constants.SNAKE_RECT_INSET,
+            xtargety + constants.SNAKE_RECT_INSET,
+            constants.SNAKE_RECT_SIZE,
+            constants.SNAKE_RECT_SIZE
+        );
+
+        const ry = new utils.Rect(
+            ytargetx + constants.SNAKE_RECT_INSET,
+            ytargety + constants.SNAKE_RECT_INSET,
+            constants.SNAKE_RECT_SIZE,
+            constants.SNAKE_RECT_SIZE
+        );
 
         const tiles = this.level.def.tiles.map((t) => {
             const ret = [];
@@ -48,27 +76,6 @@
             return ret;
         }).reduce((prev, curr) => prev.concat(curr));
 
-        const r = new utils.Rect(
-            targetx + constants.SNAKE_RECT_INSET,
-            targety + constants.SNAKE_RECT_INSET,
-            constants.SNAKE_RECT_SIZE,
-            constants.SNAKE_RECT_SIZE
-        );
-
-        const rx = new utils.Rect(
-            this.head.pos.x + constants.SNAKE_RECT_INSET,
-            targety + constants.SNAKE_RECT_INSET,
-            constants.SNAKE_RECT_SIZE,
-            constants.SNAKE_RECT_SIZE
-        );
-        
-        const ry = new utils.Rect(
-            this.head.pos.y + constants.SNAKE_RECT_INSET,
-            targety + constants.SNAKE_RECT_INSET,
-            constants.SNAKE_RECT_SIZE,
-            constants.SNAKE_RECT_SIZE
-        );
-
         let canMove = true, canMoveX = true, canMoveY = true;
         if (tiles.length > 0) {
             for (let r2 of tiles) {
@@ -79,12 +86,14 @@
         }
 
         if (canMove) {
-            this.head.pos.x = targetx;
-            this.head.pos.y = targety;
+            this.head.pos.x = ntargetx;
+            this.head.pos.y = ntargety;
         } else if (canMoveY) {
-            this.head.pos.y = targety;
+            this.head.pos.x = ytargetx;
+            this.head.pos.y = ytargety;
         } else if (canMoveX) {
-            this.head.pos.x = targetx;
+            this.head.pos.x = xtargetx;
+            this.head.pos.y = xtargety;
         } else {
             this.dashing = false;
         }
