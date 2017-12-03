@@ -4,6 +4,7 @@
     const constants = window.ld40.constants;
     const graphics = window.ld40.graphics;
     const utils = window.ld40.utils;
+    const audio = window.ld40.audio;
 
     snake.Snake = Snake;
     snake.SnakeNode = SnakeNode;
@@ -118,6 +119,7 @@
                 f.isDead = true;
                 graphics.killEntity(f.id);
                 this.addNode();
+                audio.playSfx("eat");
                 this.game.eat();
             }
         }

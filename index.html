@@ -6,6 +6,10 @@
     <link href="./main.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
+<!-- Audio -->
+<audio id="audio-world1" loop="true"> <source src="./assets/music/world1.wav" type="audio/wav" /> </audio>
+<audio id="audio-eat"> <source src="./assets/music/eat.wav" type="audio/wav" /> </audio>
+
 <!-- Shaders -->
 <script type="glsl" id="snake-shader">
         precision lowp float;
@@ -69,9 +73,10 @@ void main() {
 <!-- App -->
 <script src="./src/init.js"></script>
 <script src="./src/constants.js"></script>
+<script src="./src/utils.js"></script>
+<script src="./src/audio.js"></script>
 <script src="./src/input.js"></script>
 <script src="./src/graphics.js"></script>
-<script src="./src/utils.js"></script>
 <script src="./src/enemies.js"></script>
 <script src="./src/level.js"></script>
 <script src="./src/snake.js"></script>

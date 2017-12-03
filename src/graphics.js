@@ -2,6 +2,7 @@
     window.ld40.graphics = window.ld40.graphics || {};
     const graphics = window.ld40.graphics;
     const constants = window.ld40.constants;
+    const utils = window.ld40.utils;
 
     let _root;
     let _gData;
@@ -367,6 +368,8 @@
             _addUITextAt(levelData, "highScoreText", "0", 85, 8);
             _addUITextAt(levelData, "foodLabel", "FOOD", 125, 0);
             _addUITextAt(levelData, "foodText", "0", 125, 8);
+            _addUITextAt(levelData, "exitOpen", "OPEN", 165, 8, 0xFF0000);
+            levelData.exitOpen.alpha = 0;
 
             _addSortedChild(graphics.pixiApp.stage, levelData.container, 5);
             _addSortedChild(levelData.container, levelData.backgroundGfx, 20);
@@ -374,6 +377,12 @@
             _gData[game.id] = levelData;
         } else {
             levelData = _gData[game.id];
+        }
+        
+        if (game.foodRemaining == 0) {
+            levelData.exitOpen.alpha = 1;
+        } else {
+            levelData.exitOpen.alpha = 0;
         }
 
         levelData.foodText.text = game.foodRemaining;
@@ -397,8 +406,11 @@
         }
     }
 
-    function _addUITextAt(levelData, k, text, x, y) {
-        levelData[k] = new PIXI.Text(text, _fontStyle);
+    function _addUITextAt(levelData, k, text, x, y, color) {
+        color = color > 0 ? color : 0xFFFFFF;
+        const style = utils.clone(_fontStyle);
+        style.fill = color;
+        levelData[k] = new PIXI.Text(text, style);
         levelData[k].position.set(x, y);
         levelData[k].scale.set(0.125, 0.125);
         _addSortedChild(levelData.container, levelData[k], 15);
