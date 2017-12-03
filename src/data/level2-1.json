@@ -1,6 +1,7 @@
 {
     "name": "2-1",
     "backgroundSprite": "world-2-bg",
+    "subtext": "SPIKES    AND    SPIDERS",
     "startPosition": { "x": 17, "y": 11 },
     "exitPosition": { "x": 8, "y": 7 },
     "cameraBounds": { "x1": 0, "x2": 0, "y1": 0, "y2": 0 },

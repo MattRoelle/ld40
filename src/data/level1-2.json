@@ -1,5 +1,6 @@
 {
     "name": "1-2",
+    "subtext": "DONT    TOUCH    THE    MEAN    THINGS",
     "backgroundSprite": "world-1-bg",
     "startPosition": { "x": 10, "y": 7 },
     "exitPosition": { "x": 10, "y": 7 },

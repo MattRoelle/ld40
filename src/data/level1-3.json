@@ -1,6 +1,7 @@
 {
     "name": "1-3",
     "backgroundSprite": "world-1-bg",
+    "subtext": "YOU   CAN   MOVE   DIAGONALLY",
     "startPosition": { "x": 5, "y": 11 },
     "exitPosition": { "x": 5, "y": -3 },
     "cameraBounds": { "x1": 0, "x2": 0, "y1": 0, "y2": 0 },

@@ -16,6 +16,7 @@
         "world-1-3",
         "world-2-1",
         "world-2-2",
+        "world-2-3"
     ];
 
     const gameStates = {
@@ -28,6 +29,7 @@
 
     function Game() {
         this.initialTime = Date.now();
+        this.dying = false;
         this.currentLevel = 0;
         this.lives = 3;
         this.score = 0;
@@ -143,6 +145,8 @@
         }
     };
     Game.prototype.die = function () {
+        if (this.dying) return;
+        this.dying = true;
         audio.playSfx("die");
         this.dyingOrWarping = true;
         graphics.snakeDieEffect();
@@ -178,6 +182,7 @@
         });
     };
     Game.prototype.reset = function () {
+        this.dying = false;
         this.highScore = this.getHighScore();
         this.levelScore = 0;
         audio.pauseMusic();

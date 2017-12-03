@@ -496,6 +496,7 @@
         let tdata;
         if (!_gData.tscreen) {
             tdata = {};
+
             tdata.title = new PIXI.Text(game.level.def.name, {
                 fontFamily: "arcadeclassicregular",
                 fontSize: 180,
@@ -505,6 +506,18 @@
             tdata.title.anchor.set(0.5, 0.5);
             tdata.title.scale.set(0.125, 0.125);
             tdata.title.position.set(100, 25);
+            
+            tdata.protip = new PIXI.Text(game.level.def.subtext, {
+                fontFamily: "arcadeclassicregular",
+                fontSize: 48,
+                fill: 0xFFFFFF,
+                align: "center"
+            });
+            tdata.protip.anchor.set(0.5, 0.5);
+            tdata.protip.scale.set(0.25, 0.25);
+            tdata.protip.position.set(100, 70);
+
+            _addSortedChild(_root, tdata.protip, 30);
             _addSortedChild(_root, tdata.title, 30);
 
             _gData.tscreen = tdata;
@@ -642,6 +655,7 @@
             .add("world-1-3", "./src/data/level1-3.json")
             .add("world-2-1", "./src/data/level2-1.json")
             .add("world-2-2", "./src/data/level2-2.json")
+            .add("world-2-3", "./src/data/level2-3.json")
             .add("world-1-tile-1", "./assets/world-1-tile-1.png")
             .add("world-2-tile-1", "./assets/world-2-tile-1.png")
             .add("title", "./assets/title.png")

@@ -42,7 +42,7 @@
         this.id = utils.uniqueId();
         this.type = "speartrap";
         this.timeSpawned = Date.now();
-        this.lastPeriodChange = this.def.offset;
+        this.lastPeriodChange = this.def.offset % (this.def.activePer + this.def.inactivePer);
         this.isHitboxActive = false;
         this.pos = {
             x: def.position.x * constants.TILE_SIZE,
