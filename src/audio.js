@@ -3,25 +3,35 @@
     const audio = window.ld40.audio;
     
     const musicLookup = {
-        "world1": "audio-world1",
+        "world1": "./assets/music/world1.wav",
     };
     
     const sfxLookup = {
-        "eat": "audio-eat"
+        "eat": "./assets/music/eat.wav",
+        "warp": "./assets/music/warping.wav",
+        "die": "./assets/music/die.wav",
     };
     
+    let musicAudio;
+    
     audio.playMusic = _playMusic;
+    audio.pauseMusic = _pauseMusic;
     audio.playSfx = _playSfx;
     
     function _playMusic(song) {
-        for(let k of musicLookup) {
-            const audio = document.getElementById(k);
-            audio.pause();
+        _pauseMusic();
+        musicAudio = new Audio(musicLookup[song]);
+        musicAudio.play();
+    }
+    
+    function _pauseMusic() {
+        if (!!musicAudio) {
+            musicAudio.pause();
         }
-        document.getElementById(musicLookup[song]).play();
     }
     
     function _playSfx(sfx) {
-        document.getElementById(sfxLookup[sfx]).play();
+        var audio = new Audio(sfxLookup[sfx]);
+        audio.play();
     }
 })();

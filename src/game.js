@@ -6,6 +6,7 @@
     const graphics = window.ld40.graphics;
     const input = window.ld40.input;
     const level = window.ld40.level;
+    const audio = window.ld40.audio;
 
     game.Game = Game;
 
@@ -74,6 +75,7 @@
         }
     };
     Game.prototype.die = function () {
+        audio.playSfx("die");
         this.dyingOrWarping = true;
         graphics.snakeDieEffect();
 
@@ -85,6 +87,7 @@
 
     };
     Game.prototype.reset = function () {
+        audio.pauseMusic();
         graphics.reset(true);
         this.level = new level.Level(PIXI.loader.resources[levels[this.currentLevel]].data);
         this.snake = new snake.Snake(
@@ -104,11 +107,13 @@
 
         const _this = this;
         setTimeout(function () {
+            audio.playMusic("world1");
             graphics.reset();
             _this.atTransitionScreen = false;
         }, 2500);
     };
     Game.prototype.nextLevel = function () {
+        audio.playSfx("warp");
         this.dyingOrWarping = true;
         graphics.snakeWarpEffect();
 

@@ -5,7 +5,9 @@
     
     let _curGame;
     
-    _main();
+    window.onload = function() {
+        _main();
+    };
     
     function _main() {
         graphics.init(function() {
