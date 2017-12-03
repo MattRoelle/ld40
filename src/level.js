@@ -3,6 +3,7 @@
     const level = window.ld40.level;
     const utils = window.ld40.utils;
     const enemies = window.ld40.enemies;
+    const constants = window.ld40.constants;
     
     level.Level = Level;
     
@@ -10,6 +11,15 @@
         const def = utils.clone(definition);
         this.id = utils.uniqueId();
         this.def = def;
+
+        this.def.cameraBounds.x1 *= constants.TILE_SIZE;
+        this.def.cameraBounds.x2 *= constants.TILE_SIZE;
+        this.def.cameraBounds.y1 *= constants.TILE_SIZE;
+        this.def.cameraBounds.y2 *= constants.TILE_SIZE;
+        this.def.cameraBounds.x1 += constants.TILE_SIZE*2
+        this.def.cameraBounds.x2 += constants.TILE_SIZE*2;
+        this.def.cameraBounds.y1 += constants.TILE_SIZE*2;
+        this.def.cameraBounds.y2 += constants.TILE_SIZE*2;
         
         this.enemies = [];
         

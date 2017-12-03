@@ -20,13 +20,47 @@ varying vec2 vTextureCoord;
 
 void main(){
   vec4 c = texture2D(uSampler, vTextureCoord);
-  if (uActive == true && c.a > 0.0 && c.r > 0.05 && c.g > 0.05 && c.b > 0.05) {
+  if (uOverlay == true && c.a > 0.0) {
       gl_FragColor = uOverlayColor;
   } else {
       gl_FragColor = c;
   }
 }
     
+</script>
+
+<script type="glsl" id="intro-shader">
+    
+precision lowp float;
+
+uniform float uTime;
+uniform vec2 uResolution;
+
+// Default PIXIjs vars
+uniform sampler2D uSampler;
+varying vec4 vColor;
+varying vec2 vTextureCoord;
+
+const float PI = 3.14159265359;
+
+void main() {
+  float t = uTime;
+  float nt = t/0.8;
+  
+  //float nt = 0.25;
+  //vec2 npos = gl_FragCoord.xy/uResolution.xy;
+  //float theta = atan(npos.y - 0.5, npos.x - 0.5) + PI;
+  //float thresh = nt * 2.0 * PI + (nt*2.0);
+  
+  float dy = abs(gl_FragCoord.y - (uResolution.y/2.0) - 45.0);
+  float thresh = nt*uResolution.y/2.0;
+  
+  if (dy < thresh) {
+      gl_FragColor = texture2D(uSampler, vTextureCoord);
+  } else {
+      gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
+  }
+}
 </script>
 
 <!-- Dependencies -->

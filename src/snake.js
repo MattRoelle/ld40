@@ -95,6 +95,14 @@
                 }
             }
         }
+        
+        if (this.game.isExitOpen) {
+            const adjx = this.game.level.def.exitPosition.x*constants.TILE_SIZE;
+            const adjy = this.game.level.def.exitPosition.y*constants.TILE_SIZE;
+            if (utils.dist(this.head.pos.x, this.head.pos.y, adjx, adjy) < 10) {
+                this.game.nextLevel();
+            }
+        }
     };
     Snake.prototype.addNode = function () {
         const lastNode = this.nodes[this.nodes.length - 1];
@@ -124,7 +132,6 @@
         }
         */
     }
-
     SnakeNode.prototype.update = function () {
         if (!!this.next) {
             const newPos = this.next.positionHistory[0];

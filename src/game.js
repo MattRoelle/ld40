@@ -8,7 +8,7 @@
     const level = window.ld40.level;
 
     game.Game = Game;
-    
+
     const levels = [
         "world-1-1",
         "world-1-2"
@@ -20,6 +20,7 @@
         this.lives = 3;
         this.reset();
     }
+
     Game.prototype.tick = function () {
         this.ticks++;
 
@@ -31,12 +32,26 @@
             this.update();
         }
 
+        if (!this.atTransitionScreen) {
+            if (!this.dyingOrWarping) {
+                graphics.renderLevel(this);
+            }
+            graphics.renderSnake(this.snake);
+            graphics.setCameraPos(this.snake.head.pos, this.level.def.cameraBounds);
+        } else {
+            graphics.renderTransitionScreen(this);
+        }
+
+        graphics.renderUI(this);
     };
     Game.prototype.update = function () {
-        this.snake.update();
+        if (!this.dyingOrWarping) {
+            this.snake.update();
+            this.level.update();
+        }
 
         const dDirTicks = this.ticks - this.lastDirectionChangeAt;
-        if (dDirTicks > constants.MIN_TICKS_BETWEEN_DIR_CHANGES) {
+        if (!this.dyingOrWarping && !this.atTransitionScreen && dDirTicks > constants.MIN_TICKS_BETWEEN_DIR_CHANGES) {
             let direction = {
                 x: input.isKeyDown("a") ? -1 : input.isKeyDown("d") ? 1 : 0,
                 y: input.isKeyDown("w") ? -1 : input.isKeyDown("s") ? 1 : 0,
@@ -47,22 +62,27 @@
         if (input.isKeyDown("space")) {
             this.snake.addNode();
         }
-        
-        this.level.update();
     };
-    Game.prototype.eat = function() {
+    Game.prototype.eat = function () {
         this.foodRemaining--;
         this.score += 100;
         if (this.foodRemaining <= 0) {
             this.isExitOpen = true;
         }
     };
-    Game.prototype.die = function() {
-        this.lives--;
-        this.reset();
+    Game.prototype.die = function () {
+        this.dyingOrWarping = true;
+        graphics.snakeDieEffect();
+
+        const _this = this;
+        setTimeout(function () {
+            _this.lives--;
+            _this.reset();
+        }, 3000);
+
     };
-    Game.prototype.reset = function() {
-        graphics.reset();
+    Game.prototype.reset = function () {
+        graphics.reset(true);
         this.level = new level.Level(PIXI.loader.resources[levels[this.currentLevel]].data);
         this.snake = new snake.Snake(
             this.level.def.startPosition.x * constants.TILE_SIZE,
@@ -76,5 +96,23 @@
         this.lastDirectionChangeAt = -100;
         this.score = 0;
         this.isExitOpen = false;
+        this.atTransitionScreen = true;
+        this.dyingOrWarping = false;
+
+        const _this = this;
+        setTimeout(function () {
+            graphics.reset();
+            _this.atTransitionScreen = false;
+        }, 2500);
+    };
+    Game.prototype.nextLevel = function () {
+        this.dyingOrWarping = true;
+        graphics.snakeWarpEffect();
+
+        const _this = this;
+        setTimeout(function () {
+            _this.currentLevel++;
+            _this.reset();
+        }, 2000);
     };
 })();

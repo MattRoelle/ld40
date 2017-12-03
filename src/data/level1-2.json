@@ -1,7 +1,9 @@
 {
+  "name": "WORLD 1-2",
   "backgroundSprite": "world-1-bg",
   "startPosition": { "x": 10, "y": 10 },
   "exitPosition": { "x": 10, "y": 10 },
+  "cameraBounds": { "x1": -10, "y1": -10, "x2": 10, "y2": 10 },
   "tiles": [
     {
       "sprite": "world-1-tile-1",

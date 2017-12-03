@@ -5,6 +5,7 @@
 
     let _root;
     let _gData;
+    let _snakePickupFoodTimeout;
 
     const _sLookup = {
         snake: {
@@ -26,16 +27,7 @@
     _sLookup.snake.straight[constants.SNAKE_NODE_TYPES.BODY] = "snake-body";
     _sLookup.snake.straight[constants.SNAKE_NODE_TYPES.TAIL] = "snake-tail";
 
-    const _snakeShader = new PIXI.Filter(null, document.getElementById("snake-shader").innerHTML, {
-        uOverlay: {
-            type: "bool",
-            value: false
-        },
-        uOverlayColor: {
-            type: "vec4",
-            value: {r: 0, g: 0, b: 0, a: 1}
-        }
-    });
+    let _snakeShader, _introShader, _introShaderStart, _snakeDying, _snakeDieStart, _snakeWarping, _snakeWarpStart;
 
     graphics.init = _init;
     graphics.animationFrame = _animationFrame;
@@ -45,6 +37,10 @@
     graphics.renderUI = _renderUI;
     graphics.killEntity = _killEntity;
     graphics.reset = _reset;
+    graphics.snakePickupFoodEffect = _snakePickupFoodEffect;
+    graphics.renderTransitionScreen = _renderTransitionScreen;
+    graphics.snakeDieEffect = _snakeDieEffect;
+    graphics.snakeWarpEffect = _snakeWarpEffect;
 
     function _init(cb) {
         PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.NEAREST;
@@ -62,21 +58,19 @@
 
         _reset();
 
-        console.log(ld40.graphics.pixiApp.stage.children);
-        
         _addAssetsToLoader();
         PIXI.loader.load(function () {
             cb();
         });
     }
 
-    function _reset() {
+    function _reset(isIntro) {
         _emptyContainer(graphics.pixiApp.stage);
-        
+
         _curLivesShown = -1;
         _root = new PIXI.Container();
         _root.scale.set(4, 4);
-        
+
         _gData = {
             snake: {
                 container: new PIXI.Container()
@@ -84,16 +78,92 @@
             levels: {}
         };
 
+        _snakeShader = new PIXI.Filter(null, document.getElementById("snake-shader").innerHTML, {
+            uOverlay: {
+                type: "bool",
+                value: false
+            },
+            uOverlayColor: {
+                type: "vec4",
+                value: [1, 1, 1, 1]
+            }
+        });
+
+        _introShaderStart = Date.now();
+        _introShader = new PIXI.Filter(null, document.getElementById("intro-shader").innerHTML, {
+            uTime: {
+                type: "f",
+                value: 0
+            },
+            uResolution: {
+                type: "vec2",
+                value: [constants.SCREEN_W * 4, constants.SCREEN_H * 4]
+            }
+        });
+
+        _snakeDying = false;
+        _snakeWarping = false;
+        _gData.snake.container.filters = [_snakeShader];
+
         _addSortedChild(graphics.pixiApp.stage, _root, 15);
         _addSortedChild(_root, _gData.snake.container, 10);
+
+        if (!isIntro) {
+            _root.filters = [_introShader];
+        }
+
+        if (!!_snakePickupFoodTimeout) {
+            clearTimeout(_snakePickupFoodTimeout);
+            _snakePickupFoodTimeout = null;
+        }
     }
 
     function _animationFrame() {
+        _introShader.uniforms.uTime = (Date.now() - _introShaderStart) / 1000;
+
+        if (_snakeDying) {
+            const dt = Date.now() - _snakeDieStart;
+
+            if (dt < 2000) {
+                const scale = 1 - (dt / 2000);
+                const b = Math.sin(dt / (10 + (20 * scale)));
+
+                if (Math.abs(b) < 0.3333) {
+                    _snakeShader.uniforms.uOverlay = false;
+                } else {
+                    _snakeShader.uniforms.uOverlay = true;
+                    _snakeShader.uniforms.uOverlayColor = b > 0 ?
+                        [1, 1, 1, 1] :
+                        [0, 0, 0, 0];
+                }
+            } else {
+                _snakeShader.uniforms.uOverlay = true;
+                _snakeShader.uniforms.uOverlayColor = [0, 0, 0, 0];
+            }
+        }
+
+        if (_snakeWarping) {
+            const dt = Date.now() - _snakeWarpStart;
+
+            if (dt < 1500) {
+                const scale = 1 - (dt / 1500);
+                const b = Math.sin(dt / (10 + (20 * scale)));
+                _snakeShader.uniforms.uOverlay = true;
+                _snakeShader.uniforms.uOverlayColor = b < -0.3333 ?
+                    [1, 0, 0, 1] : b < 0.3333 ?
+                        [0, 1, 0, 1] :
+                        [0, 0, 1, 0];
+            } else {
+                _snakeShader.uniforms.uOverlay = true;
+                _snakeShader.uniforms.uOverlayColor = [0, 0, 0, 0];
+            }
+        }
     }
 
-    function _setCameraPos(snakeHeadPos) {
+    function _setCameraPos(snakeHeadPos, bounds) {
         const x = -snakeHeadPos.x * 4 + ((constants.SCREEN_W * 4) / 2);
         const y = -snakeHeadPos.y * 4 + ((constants.SCREEN_H * 4) / 2) - 60;
+        
         _root.position.set(x, y);
     }
 
@@ -168,7 +238,6 @@
                     _addSortedChild(_root, shadSprite2, 17.5);
 
                     _addSortedChild(_root, locSprite, 15);
-                    console.log(locSprite);
                 }
             }
         } else {
@@ -210,7 +279,7 @@
                 eSprite.rotation += 0.1;
             }
         }
-        
+
         if (game.isExitOpen && !gLevel.exitSpr) {
             gLevel.exitSpr = new PIXI.extras.AnimatedSprite([
                 "exit01",
@@ -290,10 +359,10 @@
             ent.isDead = true;
         }
     }
-    
+
     function _emptyContainer(container) {
         if (container.children.length == 0) return;
-        for(let i = 0; i < container.children.length; i++) {
+        for (let i = 0; i < container.children.length; i++) {
             const child = container.children[i];
             _emptyContainer(child);
             container.removeChild(child);
@@ -326,5 +395,47 @@
             b.z = b.z || 0;
             return b.z - a.z;
         });
+    }
+
+    function _snakePickupFoodEffect(t) {
+        t = t || 750;
+        _snakeShader.uniforms.uOverlay = true;
+        _snakeShader.uniforms.uOverlayColor = [1, 1, 1, 1];
+        _snakePickupFoodTimeout = setTimeout(function () {
+            _snakeShader.uniforms.uOverlay = false;
+        }, t);
+    }
+
+    function _snakeDieEffect() {
+        _snakeShader.uniforms.uOverlay = true;
+        _snakeDying = true;
+        _snakeDieStart = Date.now();
+    }
+
+    function _snakeWarpEffect() {
+        _snakeShader.uniforms.uOverlay = true;
+        _snakeWarping = true;
+        _snakeWarpStart = Date.now();
+    }
+
+    function _renderTransitionScreen(game) {
+        let tdata;
+        if (!_gData.tscreen) {
+            tdata = {};
+            tdata.title = new PIXI.Text(game.level.def.name, {
+                fontFamily: "arcadeclassicregular",
+                fontSize: 180,
+                fill: 0xFFFFFF,
+                align: "center"
+            });
+            tdata.title.anchor.set(0.5, 0.5);
+            tdata.title.scale.set(0.125, 0.125);
+            tdata.title.position.set(100, 25);
+            _addSortedChild(_root, tdata.title, 30);
+
+            _gData.tscreen = tdata;
+        } else {
+            tdata = _gData.tscreen;
+        }
     }
 })();
