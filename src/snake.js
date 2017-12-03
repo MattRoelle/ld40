@@ -82,6 +82,8 @@
         }
 
         for (let e of this.level.enemies) {
+            if (!e.isHitboxActive) continue;
+            
             const r1 = new utils.Rect(e.pos.x - 13, e.pos.y - 13, constants.TILE_SIZE, constants.TILE_SIZE);
             for (let n of this.nodes) {
                 const r2 = new utils.Rect(

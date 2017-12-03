@@ -163,7 +163,7 @@
     function _setCameraPos(snakeHeadPos, bounds) {
         const x = -snakeHeadPos.x * 4 + ((constants.SCREEN_W * 4) / 2);
         const y = -snakeHeadPos.y * 4 + ((constants.SCREEN_H * 4) / 2) - 60;
-        
+
         _root.position.set(x, y);
     }
 
@@ -265,9 +265,34 @@
         for (let e of level.enemies) {
             let eSprite;
             if (!_gData[e.id]) {
-                eSprite = PIXI.Sprite.from(e.type);
-                _addSortedChild(_root, eSprite);
+                if (e.type == "spikeball") {
+                    eSprite = new PIXI.extras.AnimatedSprite([
+                        "spider01",
+                        "spider02",
+                        "spider03",
+                        "spider04"
+                    ].map(PIXI.Texture.from));
+                    eSprite.animationSpeed = 0.2;
+                    eSprite.play();
+                } else {
+                    eSprite = PIXI.Sprite.from(e.type);
+                }
+                _addSortedChild(_root, eSprite, 12);
                 _gData[e.id] = eSprite;
+
+                if (e.type == "speartrap") {
+                    eSprite.spearSprite = new PIXI.extras.AnimatedSprite([
+                        "speartrap-active01",
+                        "speartrap-active02",
+                        "speartrap-active03"
+                    ].map(PIXI.Texture.from));
+                    eSprite.spearSprite.loop = false;
+                    eSprite.spearSprite.gotoAndPlay(0);
+                    eSprite.spearSprite.animationSpeed = 0.3;
+                    eSprite.spearSprite.anchor.set(0.5, 0.5);
+                    eSprite.dead = true;
+                    _addSortedChild(_root, eSprite.spearSprite, 11.5);
+                }
             } else {
                 eSprite = _gData[e.id];
                 eSprite.anchor.set(0.5, 0.5);
@@ -276,7 +301,22 @@
             eSprite.position.set(e.pos.x - eSprite.texture.width / 2, e.pos.y - eSprite.texture.height / 2);
 
             if (e.type == "spikeball") {
-                eSprite.rotation += 0.1;
+                const curPos = e.def.positions[e.currentPosition % e.nPositions];
+                const nextPos = e.def.positions[(e.currentPosition + 1) % e.nPositions];
+                if (nextPos.x > curPos.x) { eSprite.rotation = 0; eSprite.scale.set(1, 1); }
+                else if (nextPos.x < curPos.x) { eSprite.rotation = 0; eSprite.scale.set(-1, 1); }
+            } else if (e.type == "speartrap") {
+                eSprite.spearSprite.position.set(e.pos.x - eSprite.texture.width / 2, e.pos.y - eSprite.texture.height / 2);
+                if (e.isHitboxActive) {
+                    if (eSprite.dead) {
+                        eSprite.dead = false;
+                        eSprite.spearSprite.gotoAndPlay(0);
+                    }
+                    eSprite.spearSprite.alpha = 1;
+                } else {
+                    eSprite.dead = true;
+                    eSprite.spearSprite.alpha = 0;
+                }
             }
         }
 
@@ -369,24 +409,6 @@
         }
     }
 
-    function _addAssetsToLoader() {
-        PIXI.loader
-            .add("world-1-1", "./src/data/level1-1.json")
-            .add("world-1-2", "./src/data/level1-2.json")
-            .add("world-1-tile-1", "./assets/world-1-tile-1.png")
-            .add("shadow", "./assets/shadow.png")
-            .add("snake-body", "./assets/body.png")
-            .add("snake-head", "./assets/head.png")
-            .add("snake-tail", "./assets/tail.png")
-            .add("snake-head-diag", "./assets/head_diag.png")
-            .add("snake-tail-diag", "./assets/tail_diag.png")
-            .add("world-1-bg", "./assets/world-1-bg.png")
-            .add("spikeball", "./assets/spikeball.png")
-            .add("exit01", "./assets/exit01.png")
-            .add("exit02", "./assets/exit02.png")
-            .add("food", "./assets/food.png");
-    }
-
     function _addSortedChild(container, child, z) {
         child.z = z;
         container.addChild(child);
@@ -437,5 +459,30 @@
         } else {
             tdata = _gData.tscreen;
         }
+    }
+
+    function _addAssetsToLoader() {
+        PIXI.loader
+            .add("world-1-1", "./src/data/level1-1.json")
+            .add("world-1-2", "./src/data/level1-2.json")
+            .add("world-1-tile-1", "./assets/world-1-tile-1.png")
+            .add("shadow", "./assets/shadow.png")
+            .add("snake-body", "./assets/body.png")
+            .add("snake-head", "./assets/head.png")
+            .add("snake-tail", "./assets/tail.png")
+            .add("snake-head-diag", "./assets/head_diag.png")
+            .add("snake-tail-diag", "./assets/tail_diag.png")
+            .add("world-1-bg", "./assets/world-1-bg.png")
+            .add("spider01", "./assets/spider01.png")
+            .add("spider02", "./assets/spider02.png")
+            .add("spider03", "./assets/spider03.png")
+            .add("spider04", "./assets/spider04.png")
+            .add("exit01", "./assets/exit01.png")
+            .add("exit02", "./assets/exit02.png")
+            .add("speartrap", "./assets/spear_idle.png")
+            .add("speartrap-active01", "./assets/spear_active00.png")
+            .add("speartrap-active02", "./assets/spear_active01.png")
+            .add("speartrap-active03", "./assets/spear_active02.png")
+            .add("food", "./assets/food.png");
     }
 })();

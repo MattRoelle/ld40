@@ -11,8 +11,8 @@
     constants.TICKS_PER_SECOND = 40;
     constants.TICK_INTERVAL = 1000/constants.TICKS_PER_SECOND;
     constants.MIN_TICKS_BETWEEN_DIR_CHANGES = 4;
-    constants.SNAKE_RECT_SIZE = 8;
-    constants.SNAKE_RECT_INSET = 2;
+    constants.SNAKE_RECT_SIZE = 6;
+    constants.SNAKE_RECT_INSET = 4;
     
     constants.SNAKE_NODE_TYPES = {
         HEAD: 0,
