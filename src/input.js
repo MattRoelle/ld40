@@ -22,9 +22,11 @@
     
     function _init() {
         window.addEventListener("keydown", function(e) {
+            e.preventDefault();
             _keystates[e.which] = true;
         });
         window.addEventListener("keyup", function(e) {
+            e.preventDefault();
             _keystates[e.which] = false;
         });
     }
@@ -39,6 +41,7 @@
             window.removeEventListener(_currentKeydownEv);
         }
         _currentKeydownEv = window.addEventListener("keydown", function(e) {
+            e.preventDefault();
             cb();
         });
     }
