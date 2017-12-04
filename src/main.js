@@ -11,6 +11,7 @@
     
     function _main() {
         graphics.init(function() {
+            document.getElementById("loading").style["display"] = "none";
             input.init();
             _startGame();
             requestAnimationFrame(_animationFrame);
